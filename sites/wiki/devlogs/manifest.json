@@ -1,0 +1,40 @@
+{
+  "projects": [
+    {
+      "id": "slyr.html",
+      "name": "Slyr.cpp",
+      "nameHi": "स्लायर.सीपीपी",
+      "desc": "SLYR is a dual-compute avionics platform that separates deterministic flight control from AI-assisted decision making — enforced at the hardware level.",
+      "status": "active",
+      "updated": "2025-10-28",
+      "lang": "cpp"
+    },
+    {
+      "id": "bloatware.html",
+      "name": "BloatWare",
+      "nameHi": "ब्लोटवेयर",
+      "desc": "BloatWare is discord bot serving directly under KGB, Our beloved commrade!",
+      "status": "paused",
+      "updated": "2026-04-30",
+      "lang": "python"
+    },
+    {
+      "id": "wdm.html",
+      "name": "W.Decision-Matrix",
+      "nameHi": "ब्डब्ल्यू.निर्णय-मैट्रिक्स",
+      "desc": "A zero-dependency, single-file weighted decision matrix tool. Add criteria with adjustable weights, add options, score each cell on a 0–10 stepper, and get a ranked results list with animated bars ",
+      "status": "completed",
+      "updated": "2026-05-1",
+      "lang": "html"
+    },
+    {
+      "id": "openh.html",
+      "name": "OpenNH Download",
+      "nameHi": "ओपनएनएच डाउनलोड",
+      "desc": "A Chrome extension that bulk-downloads nhentai galleries into a ZIP archive with one click. Reads the real CDN image URL directly from the page DOM — handles all i1, i2, i3… subdomains automatically. ",
+      "status": "completed",
+      "updated": "2026-05-5",
+      "lang": "JavaScript"
+    }
+  ]
+}

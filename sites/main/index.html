@@ -1,1 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>emtypyie.in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+  --cream:  #f2ede4;
+  --cream2: #e8e0d3;
+  --cream3: #ede7dc;
+  --ink:    #1a1814;
+  --ink2:   #4a4640;
+  --muted:  #9a9188;
+  --rule:   #d5cdc2;
+  --orange: #c85a1e;
+  --blue:   #1d4e89;
+  --serif:  'DM Serif Display', Georgia, serif;
+  --mono:   'IBM Plex Mono', monospace;
+  --sans:   'Inter', sans-serif;
+}
+
+html, body { background: var(--cream); color: var(--ink); font-family: var(--sans); min-height: 100vh; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--cream); border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem; height: 52px;
+}
+.nav-brand { font-family: var(--mono); font-size: 0.78rem; font-weight: 500; color: var(--ink2); text-decoration: none; letter-spacing: 0.03em; }
+.nav-brand span { color: var(--orange); }
+.nav-links { display: flex; align-items: center; gap: 0.2rem; list-style: none; }
+.nav-links a {
+  font-family: var(--sans); font-size: 0.78rem; font-weight: 400; color: var(--ink2);
+  text-decoration: none; padding: 0.35rem 0.75rem; border-radius: 4px;
+  border: 1px solid transparent; transition: border-color 0.15s, background 0.15s;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.nav-links a:hover { border-color: var(--rule); background: var(--cream2); }
+.nav-links a svg { flex-shrink: 0; }
+
+/* ── HERO ── */
+.hero {
+  max-width: 900px; margin: 0 auto;
+  padding: 8vh 3rem 6vh; border-bottom: 1px solid var(--rule);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end;
+}
+.eyebrow {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 1.4rem;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.eyebrow::before { content: ''; display: block; width: 28px; height: 1.5px; background: var(--orange); }
+h1 { font-family: var(--serif); font-size: clamp(3rem, 5.5vw, 4.6rem); font-weight: 400; line-height: 1.0; color: var(--ink); letter-spacing: -0.01em; }
+h1 .dot { color: var(--orange); }
+.hero-sub { font-size: 0.88rem; font-weight: 300; color: var(--ink2); line-height: 1.75; margin-top: 1.5rem; max-width: 340px; }
+.hero-meta { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 2.2rem; }
+
+.domain-path { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 1rem; text-transform: uppercase; }
+.stat-list { list-style: none; border-top: 1px solid var(--rule); }
+.stat-list li { display: flex; justify-content: space-between; align-items: baseline; padding: 0.85rem 0; border-bottom: 1px solid var(--rule); gap: 1rem; }
+.stat-label { font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+.stat-val { font-family: var(--mono); font-size: 0.78rem; color: var(--ink2); font-weight: 500; text-align: right; }
+
+/* ── FIELDS STRIP ── */
+.fields-strip {
+  border-bottom: 1px solid var(--rule);
+  background: var(--cream3);
+}
+.fields-inner {
+  max-width: 900px; margin: 0 auto; padding: 1.2rem 3rem;
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+}
+.fields-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.field-tag {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+  color: var(--ink2); border: 1px solid var(--rule); padding: 0.25rem 0.65rem;
+  border-radius: 2px; background: var(--cream);
+}
+.field-tag.active { border-color: var(--orange); color: var(--orange); }
+
+/* ── PROJECTS ── */
+.projects { max-width: 900px; margin: 0 auto; padding: 4.5rem 3rem 5rem; }
+.section-label {
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 2.2rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.project-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--rule); }
+.project-card {
+  padding: 2rem 0; border-bottom: 1px solid var(--rule);
+  text-decoration: none; color: inherit; display: block;
+  position: relative; transition: background 0.15s; padding-right: 2rem;
+}
+.project-card:nth-child(odd) { padding-right: 3rem; border-right: 1px solid var(--rule); }
+.project-card:nth-child(even) { padding-left: 3rem; padding-right: 0; }
+.project-card:not(.wip):hover .card-title { color: var(--orange); }
+.card-sub { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+.card-title { font-family: var(--serif); font-size: 1.8rem; font-weight: 400; line-height: 1.1; color: var(--ink); transition: color 0.15s; margin-bottom: 0.6rem; }
+.card-desc { font-size: 0.82rem; font-weight: 300; color: var(--ink2); line-height: 1.65; max-width: 300px; margin-bottom: 0.9rem; }
+.card-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.card-tag {
+  font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em;
+  padding: 0.18rem 0.5rem; border-radius: 2px;
+  border: 1px solid var(--rule); color: var(--muted);
+}
+.card-tag.aerospace { border-color: #1d4e89; color: #1d4e89; }
+.card-tag.cs { border-color: #3a7d44; color: #3a7d44; }
+.card-tag.research { border-color: #7b3f00; color: #7b3f00; }
+.card-arrow { position: absolute; top: 2rem; right: 0; font-family: var(--mono); font-size: 0.75rem; color: var(--muted); opacity: 0; transition: opacity 0.15s, transform 0.15s; }
+.project-card:not(.wip):hover .card-arrow { opacity: 1; transform: translateX(3px); }
+.wip { opacity: 0.4; cursor: default; pointer-events: none; }
+.wip .card-sub::after { content: ' · soon'; color: var(--orange); opacity: 0.7; }
+
+/* ── BLOG ── */
+.blog-section { border-top: 1px solid var(--rule); }
+.blog-inner { max-width: 900px; margin: 0 auto; padding: 4.5rem 3rem 5rem; }
+
+.blog-list { list-style: none; }
+.blog-item {
+  display: grid; grid-template-columns: 120px 1fr auto;
+  gap: 0 2rem; align-items: baseline;
+  padding: 1.1rem 0; border-bottom: 1px solid var(--rule);
+  cursor: pointer; text-decoration: none; color: inherit;
+}
+.blog-item:first-child { border-top: 1px solid var(--rule); }
+.blog-item:hover .blog-title { color: var(--orange); }
+.blog-date { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.06em; padding-top: 0.08rem; }
+.blog-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 400; color: var(--ink); transition: color 0.15s; line-height: 1.3; }
+.blog-tags { display: flex; gap: 0.35rem; }
+.blog-tag {
+  font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.08em;
+  padding: 0.15rem 0.45rem; border-radius: 2px;
+  border: 1px solid var(--rule); color: var(--muted); white-space: nowrap;
+}
+.blog-tag.aerospace { border-color: #1d4e89; color: #1d4e89; }
+.blog-tag.cs { border-color: #3a7d44; color: #3a7d44; }
+.blog-tag.research { border-color: #7b3f00; color: #7b3f00; }
+
+.blog-empty {
+  padding: 3rem 0; text-align: center;
+  font-family: var(--mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em;
+}
+.blog-empty span { display: block; margin-top: 0.5rem; font-size: 0.62rem; opacity: 0.6; }
+
+/* ── BLOG POST MODAL ── */
+#modal-post .modal { max-width: 680px; }
+.post-eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+.post-title { font-family: var(--serif); font-size: 2rem; font-weight: 400; line-height: 1.15; color: var(--ink); margin-bottom: 0.5rem; }
+.post-meta { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
+.post-body { font-size: 0.9rem; color: var(--ink2); line-height: 1.8; font-weight: 300; }
+.post-body p { margin-bottom: 1rem; }
+.post-body h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; color: var(--ink); margin: 1.5rem 0 0.5rem; }
+.post-body code { font-family: var(--mono); font-size: 0.8rem; background: var(--cream2); padding: 0.1em 0.35em; border-radius: 2px; }
+.post-body pre { font-family: var(--mono); font-size: 0.78rem; background: var(--ink); color: var(--cream); padding: 1.2rem; border-radius: 2px; overflow-x: auto; margin: 1rem 0; line-height: 1.6; }
+
+/* ── FOOTER ── */
+footer { border-top: 1px solid var(--rule); background: var(--cream2); }
+.footer-inner { max-width: 900px; margin: 0 auto; padding: 2.5rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+.footer-brand { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: var(--ink2); margin-bottom: 0.5rem; }
+.footer-brand span { color: var(--orange); }
+.footer-tagline { font-size: 0.78rem; color: var(--muted); font-weight: 300; line-height: 1.6; }
+.footer-links { display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-end; }
+.footer-links a { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.15s; }
+.footer-links a:hover { color: var(--ink2); }
+.footer-bottom { max-width: 900px; margin: 0 auto; padding: 1rem 3rem 2rem; border-top: 1px solid var(--rule); font-size: 0.68rem; color: var(--muted); font-family: var(--mono); line-height: 1.75; }
+
+/* ── MODAL BASE ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,24,20,0.55); z-index: 100; align-items: center; justify-content: center; padding: 2rem; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--cream); border: 1px solid var(--rule); max-width: 560px; width: 100%; padding: 2.5rem; position: relative; max-height: 80vh; overflow-y: auto; }
+.modal h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 400; margin-bottom: 1.2rem; color: var(--ink); }
+.modal p { font-size: 0.82rem; color: var(--ink2); line-height: 1.75; margin-bottom: 0.9rem; font-weight: 300; }
+.modal-close { position: absolute; top: 1.2rem; right: 1.4rem; background: none; border: none; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); cursor: pointer; letter-spacing: 0.1em; }
+.modal-close:hover { color: var(--ink); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  nav { padding: 0 1.5rem; }
+  .banner { height: 160px; }
+  .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 6vh 1.5rem 5vh; }
+  .fields-inner { padding: 1rem 1.5rem; }
+  .projects { padding: 3rem 1.5rem 4rem; }
+  .project-row { grid-template-columns: 1fr; }
+  .project-card:nth-child(odd) { border-right: none; padding-right: 0; }
+  .project-card:nth-child(even) { padding-left: 0; }
+  .blog-inner { padding: 3rem 1.5rem 4rem; }
+  .blog-item { grid-template-columns: 90px 1fr; }
+  .blog-tags { display: none; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-links { align-items: flex-start; }
+  .footer-bottom { padding: 1rem 1.5rem 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="/">emtypyie<span>.</span>in</a>
+  <ul class="nav-links">
+    <li>
+      <a href="https://wiki.emtypyie.in">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="12" height="12" rx="1.5"/><line x1="1" y1="5" x2="13" y2="5"/><line x1="5" y1="5" x2="5" y2="13"/></svg>
+        wiki
+      </a>
+    </li>
+    <li>
+      <a href="https://dosa.emtypyie.in">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 1.5C7 1.5 9.5 4 9.5 7S7 12.5 7 12.5"/><line x1="1.5" y1="7" x2="12.5" y2="7"/></svg>
+        dosa
+      </a>
+    </li>
+    <li>
+      <a href="#blog" onclick="document.getElementById('blog').scrollIntoView({behavior:'smooth'}); return false;">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h10v10H2z"/><line x1="4" y1="5" x2="10" y2="5"/><line x1="4" y1="7.5" x2="8" y2="7.5"/></svg>
+        blog
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11c-2.5.7-2.5-1.4-3.5-1.7M10 13v-2.5a2 2 0 0 0-.6-1.6c2-.2 4-1 4-4.4a3.4 3.4 0 0 0-.9-2.4 3.2 3.2 0 0 0-.1-2.3s-.8-.2-2.5 1a8.7 8.7 0 0 0-4.6 0C3.8.6 3 .8 3 .8a3.2 3.2 0 0 0-.1 2.3A3.4 3.4 0 0 0 2 5.5c0 3.4 2 4.2 4 4.4a2 2 0 0 0-.6 1.6V13"/></svg>
+        github
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="eyebrow">emtypyie.in</p>
+    <h1>Things I<br>build<span class="dot">.</span></h1>
+    <p class="hero-sub">Aerospace R&amp;D meets computer science. Working on systems that fly, compute, and occasionally do both. Mostly unfinished, always in motion.</p>
+    <p class="hero-meta">// Yappin N Buildin.</p>
+  </div>
+  <div class="hero-right">
+    <p class="domain-path">active subdomains</p>
+    <ul class="stat-list">
+      <li><span class="stat-label">Engineering wiki</span><span class="stat-val">wiki.emtypyie.in</span></li>
+      <li><span class="stat-label">Space org</span><span class="stat-val">dosa.emtypyie.in</span></li>
+      <li><span class="stat-label">Interests</span><span class="stat-val">Aerospace · CS</span></li>
+      <li><span class="stat-label">Status</span><span class="stat-val">actively building</span></li>
+      <li><span class="stat-label">Location</span><span class="stat-val">Kolkata, IN</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- FIELDS STRIP -->
+<div class="fields-strip">
+  <div class="fields-inner">
+    <span class="fields-label">Focus areas</span>
+    <span class="field-tag aerospace active">Aerospace</span>
+    <span class="field-tag active">Propulsion</span>
+    <span class="field-tag active">Avionics</span>
+    <span class="field-tag cs active">Computer Science</span>
+    <span class="field-tag active">Embedded Systems</span>
+    <span class="field-tag active">Simulation</span>
+    <span class="field-tag research active">R&amp;D</span>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section class="projects">
+  <p class="section-label">subdomains &amp; projects</p>
+  <div class="project-row">
+
+    <a class="project-card" href="https://wiki.emtypyie.in">
+      <p class="card-sub">wiki.emtypyie.in</p>
+      <h2 class="card-title">Engineering<br>Wiki</h2>
+      <p class="card-desc">Dev logs, architecture decisions, and technical breakdowns from things I'm actually working on.</p>
+      <div class="card-tags">
+        <span class="card-tag cs">CS</span>
+        <span class="card-tag aerospace">Aerospace</span>
+        <span class="card-tag research">R&amp;D</span>
+      </div>
+      <span class="card-arrow">→</span>
+    </a>
+
+    <a class="project-card" href="https://dosa.emtypyie.in">
+      <p class="card-sub">dosa.emtypyie.in</p>
+      <h2 class="card-title">DOSA</h2>
+      <p class="card-desc">A space project organisation. Missions, research, and the long bet on getting things into orbit.</p>
+      <div class="card-tags">
+        <span class="card-tag aerospace">Aerospace</span>
+        <span class="card-tag research">R&amp;D</span>
+      </div>
+      <span class="card-arrow">→</span>
+    </a>
+
+    <a class="project-card wip" href="#">
+      <p class="card-sub">kodin.emtypyie.in</p>
+      <h2 class="card-title">Kodin</h2>
+      <p class="card-desc">Coming soon. Something to do with code. Presumably.</p>
+      <div class="card-tags">
+        <span class="card-tag cs">CS</span>
+      </div>
+    </a>
+
+    <a class="project-card wip" href="#">
+      <p class="card-sub">?.emtypyie.in</p>
+      <h2 class="card-title">And more</h2>
+      <p class="card-desc">The list keeps growing. It's a problem.</p>
+      <div class="card-tags"></div>
+    </a>
+
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="blog-section" id="blog">
+  <div class="blog-inner">
+    <p class="section-label">writing &amp; notes</p>
+    <ul class="blog-list" id="blog-list">
+      <li class="blog-empty">
+        loading posts<span>fetching /blog/*.json</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">emtypyie<span>.</span>in</p>
+      <p class="footer-tagline">Aerospace R&amp;D · Computer Science<br>Personal hub for experiments and notes.</p>
+    </div>
+    <div class="footer-links">
+      <a href="https://wiki.emtypyie.in">wiki.emtypyie.in</a>
+      <a href="https://dosa.emtypyie.in">dosa.emtypyie.in</a>
+      <a style="opacity:0.4; pointer-events:none; cursor:default;">kodin.emtypyie.in · soon</a>
+      <a href="#" onclick="openModal('privacy'); return false;">privacy policy</a>
+      <a href="#" onclick="openModal('disclaimer'); return false;">disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2025 emtypyie.in &nbsp;·&nbsp;
+    Any references to political figures, historical events, or public personalities on this site and its subdomains are intended solely as memes and satire. No endorsement, affiliation, or serious commentary is implied or should be inferred. If you found it offensive, that's kind of the point. If you found it funny, welcome.
+  </div>
+</footer>
+
+<!-- MODALS: PRIVACY + DISCLAIMER -->
+<div class="modal-overlay" id="modal-privacy" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">close ×</button>
+    <h2>Privacy Policy</h2>
+    <p>This site does not collect, store, or sell any personal data. There are no tracking scripts, analytics beacons, or third-party data brokers lurking here.</p>
+    <p>If you contact me directly (email, GitHub, etc.), I'll have your message. That's it. I'm not doing anything weird with it.</p>
+    <p>External links (wiki, dosa, GitHub) are governed by their own policies. This policy covers emtypyie.in only.</p>
+    <p>Last updated: 2025.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-disclaimer" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">close ×</button>
+    <h2>Disclaimer</h2>
+    <p>Everything on this site and its subdomains is personal work, opinion, and experimentation. Nothing here constitutes professional advice — legal, financial, medical, or otherwise.</p>
+    <p>Any references to political figures, historical events, governments, organisations, or public personalities are intended as memes and satire only. No endorsement, political alignment, or serious commentary is implied or should be inferred.</p>
+    <p>Projects described here may be incomplete, broken, or abandoned. That's kind of the whole thing.</p>
+    <p>If you have a concern, open a GitHub issue or send a message. I'm reasonable.</p>
+  </div>
+</div>
+
+<!-- MODAL: BLOG POST -->
+<div class="modal-overlay" id="modal-post" onclick="if(event.target===this)closeModal()">
+  <div class="modal" style="max-width:680px;">
+    <button class="modal-close" onclick="closeModal()">close ×</button>
+    <div id="post-content"></div>
+  </div>
+</div>
+
+<script>
+/* ── MODAL HELPERS ── */
+function openModal(id) {
+  document.getElementById('modal-' + id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ── BLOG LOADER ── */
+/*
+  Place your blog JSON files at:  /blog/DD-MM-YYYY.json
+  The index file at:              /blog/index.json
+
+  index.json format:
+  ["09-06-2026", "05-06-2026", "01-06-2026"]   ← array of date strings, newest first
+
+  Each post file (e.g. 09-06-2026.json) format:
+  See blog-format.json for the full schema.
+*/
+
+const TAG_CLASSES = { aerospace: 'aerospace', cs: 'cs', research: 'research' };
+
+function fmtDate(str) {
+  const [d, m, y] = str.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+}
+
+function renderTagsHtml(tags, cls) {
+  if (!tags || !tags.length) return '';
+  return tags.map(t => {
+    const tc = TAG_CLASSES[t.toLowerCase()] || '';
+    return `<span class="${cls} ${tc}">${t}</span>`;
+  }).join('');
+}
+
+function renderPostModal(post) {
+  const bodyHtml = (post.body || []).map(block => {
+    if (block.type === 'p') return `<p>${block.content}</p>`;
+    if (block.type === 'h3') return `<h3>${block.content}</h3>`;
+    if (block.type === 'code') return `<pre>${block.content}</pre>`;
+    if (block.type === 'inline-code') return `<p><code>${block.content}</code></p>`;
+    return '';
+  }).join('');
+
+  document.getElementById('post-content').innerHTML = `
+    <p class="post-eyebrow">${fmtDate(post.date)} ${post.tags ? '· ' + post.tags.join(' · ') : ''}</p>
+    <h2 class="post-title">${post.title}</h2>
+    <p class="post-meta">${post.subtitle || ''}</p>
+    <div class="post-body">${bodyHtml}</div>
+  `;
+  openModal('post');
+}
+
+async function loadBlog() {
+  const list = document.getElementById('blog-list');
+
+  let index;
+  try {
+    const r = await fetch('/blog/index.json');
+    if (!r.ok) throw new Error();
+    index = await r.json();
+  } catch {
+    list.innerHTML = `<li class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></li>`;
+    return;
+  }
+
+  if (!index.length) {
+    list.innerHTML = `<li class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></li>`;
+    return;
+  }
+
+  /* load all post metadata in parallel */
+  const posts = await Promise.all(index.map(async date => {
+    try {
+      const r = await fetch(`/blog/${date}.json`);
+      if (!r.ok) return null;
+      return await r.json();
+    } catch { return null; }
+  }));
+
+  const valid = posts.filter(Boolean);
+  if (!valid.length) {
+    list.innerHTML = `<li class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></li>`;
+    return;
+  }
+
+  list.innerHTML = valid.map(post => `
+    <li class="blog-item" onclick='openPost(${JSON.stringify(JSON.stringify(post))})'>
+      <span class="blog-date">${fmtDate(post.date)}</span>
+      <span class="blog-title">${post.title}</span>
+      <div class="blog-tags">${renderTagsHtml(post.tags, 'blog-tag')}</div>
+    </li>
+  `).join('');
+}
+
+function openPost(postJson) {
+  renderPostModal(JSON.parse(postJson));
+}
+
+loadBlog();
+</script>
+</body>
+</html>
