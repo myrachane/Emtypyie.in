@@ -1,0 +1,3 @@
+[submodule "sites/sites/DOSA"]
+	path = sites/sites/DOSA
+	url = https://github.com/myrachane/DOSA
