@@ -442,6 +442,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
   See blog-format.json for the full schema.
 */
 
+let loadedPosts = [];
 const TAG_CLASSES = { aerospace: 'aerospace', cs: 'cs', research: 'research' };
 
 function fmtDate(str) {
@@ -474,6 +475,28 @@ function renderPostModal(post) {
     <div class="post-body">${bodyHtml}</div>
   `;
   openModal('post');
+}
+
+function renderBlogList(posts) {
+  loadedPosts = posts;
+  const list = document.getElementById('blog-list');
+
+  list.innerHTML = posts.map((post, i) => `
+    <li class="blog-item" data-index="${i}">
+      <span class="blog-date">${fmtDate(post.date)}</span>
+      <span class="blog-title">${post.title}</span>
+      <div class="blog-tags">${renderTagsHtml(post.tags, 'blog-tag')}</div>
+    </li>
+  `).join('');
+
+  /* attach handlers in JS instead of inline onclick — avoids breaking on
+     quotes/apostrophes inside post titles or content */
+  list.querySelectorAll('.blog-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.getAttribute('data-index'), 10);
+      renderPostModal(loadedPosts[idx]);
+    });
+  });
 }
 
 async function loadBlog() {
@@ -509,17 +532,7 @@ async function loadBlog() {
     return;
   }
 
-  list.innerHTML = valid.map(post => `
-    <li class="blog-item" onclick='openPost(${JSON.stringify(JSON.stringify(post))})'>
-      <span class="blog-date">${fmtDate(post.date)}</span>
-      <span class="blog-title">${post.title}</span>
-      <div class="blog-tags">${renderTagsHtml(post.tags, 'blog-tag')}</div>
-    </li>
-  `).join('');
-}
-
-function openPost(postJson) {
-  renderPostModal(JSON.parse(postJson));
+  renderBlogList(valid);
 }
 
 loadBlog();
