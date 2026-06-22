@@ -19,6 +19,7 @@
   --muted:  #9a9188;
   --rule:   #d5cdc2;
   --orange: #c85a1e;
+  --orange-deep: #8c3f15;
   --blue:   #1d4e89;
   --serif:  'DM Serif Display', Georgia, serif;
   --mono:   'IBM Plex Mono', monospace;
@@ -46,11 +47,49 @@ nav {
 .nav-links a:hover { border-color: var(--rule); background: var(--cream2); }
 .nav-links a svg { flex-shrink: 0; }
 
+/* ── FLOATING SUPPORT BUTTON ── */
+.support-fab {
+  position: fixed; top: 68px; right: 28px; z-index: 60;
+  display: flex; align-items: center; gap: 0.45rem;
+  background: var(--orange); color: var(--cream);
+  font-family: var(--mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+  border: none; border-radius: 6px; padding: 0.62rem 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--orange-deep), 0 6px 14px rgba(26,24,20,0.18);
+  transform: translateY(0);
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+}
+.support-fab svg { flex-shrink: 0; }
+.support-fab:hover { transform: translateY(-1px); box-shadow: 0 5px 0 var(--orange-deep), 0 9px 16px rgba(26,24,20,0.2); }
+.support-fab:active { transform: translateY(4px); box-shadow: 0 0 0 var(--orange-deep), 0 2px 6px rgba(26,24,20,0.18); }
+
+/* ── BANNER CAROUSEL ── */
+.banner-section { border-bottom: 1px solid var(--rule); background: var(--cream2); display: none; }
+.banner-viewport {
+  max-width: 900px; margin: 0 auto; position: relative; overflow: hidden;
+  aspect-ratio: 16 / 6; background: var(--cream3);
+}
+.banner-track { display: flex; height: 100%; transition: transform 0.55s cubic-bezier(.65,0,.35,1); }
+.banner-slide { flex: 0 0 100%; height: 100%; }
+.banner-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.banner-nav {
+  position: absolute; top: 50%; transform: translateY(-50%); width: 34px; height: 34px;
+  border-radius: 50%; border: 1px solid var(--rule); background: rgba(242,237,228,0.85);
+  color: var(--ink2); font-size: 1.1rem; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.banner-nav:hover { background: var(--cream); color: var(--orange); }
+.banner-nav.prev { left: 14px; }
+.banner-nav.next { right: 14px; }
+.banner-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+.banner-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(26,24,20,0.25); cursor: pointer; transition: background 0.15s, width 0.15s; }
+.banner-dot.active { background: var(--orange); width: 16px; border-radius: 3px; }
+
 /* ── HERO ── */
 .hero {
   max-width: 900px; margin: 0 auto;
-  padding: 8vh 3rem 6vh; border-bottom: 1px solid var(--rule);
-  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end;
+  padding: 9vh 3rem 7vh; border-bottom: 1px solid var(--rule);
 }
 .eyebrow {
   font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em;
@@ -60,31 +99,8 @@ nav {
 .eyebrow::before { content: ''; display: block; width: 28px; height: 1.5px; background: var(--orange); }
 h1 { font-family: var(--serif); font-size: clamp(3rem, 5.5vw, 4.6rem); font-weight: 400; line-height: 1.0; color: var(--ink); letter-spacing: -0.01em; }
 h1 .dot { color: var(--orange); }
-.hero-sub { font-size: 0.88rem; font-weight: 300; color: var(--ink2); line-height: 1.75; margin-top: 1.5rem; max-width: 340px; }
+.hero-sub { font-size: 0.92rem; font-weight: 300; color: var(--ink2); line-height: 1.75; margin-top: 1.5rem; max-width: 420px; }
 .hero-meta { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 2.2rem; }
-
-.domain-path { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 1rem; text-transform: uppercase; }
-.stat-list { list-style: none; border-top: 1px solid var(--rule); }
-.stat-list li { display: flex; justify-content: space-between; align-items: baseline; padding: 0.85rem 0; border-bottom: 1px solid var(--rule); gap: 1rem; }
-.stat-label { font-size: 0.8rem; color: var(--muted); font-weight: 400; }
-.stat-val { font-family: var(--mono); font-size: 0.78rem; color: var(--ink2); font-weight: 500; text-align: right; }
-
-/* ── FIELDS STRIP ── */
-.fields-strip {
-  border-bottom: 1px solid var(--rule);
-  background: var(--cream3);
-}
-.fields-inner {
-  max-width: 900px; margin: 0 auto; padding: 1.2rem 3rem;
-  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
-}
-.fields-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
-.field-tag {
-  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
-  color: var(--ink2); border: 1px solid var(--rule); padding: 0.25rem 0.65rem;
-  border-radius: 2px; background: var(--cream);
-}
-.field-tag.active { border-color: var(--orange); color: var(--orange); }
 
 /* ── MANIFESTO ── */
 .manifesto { border-bottom: 1px solid var(--rule); background: var(--cream); }
@@ -97,74 +113,51 @@ h1 .dot { color: var(--orange); }
 }
 .quote-attribution { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 1.3rem; }
 
-/* ── PROJECTS ── */
-.projects { max-width: 900px; margin: 0 auto; padding: 4.5rem 3rem 5rem; }
+/* ── BLOG ── */
+.blog-section { border-top: 1px solid var(--rule); }
+.blog-inner { max-width: 900px; margin: 0 auto; padding: 4.5rem 3rem 5rem; }
 .section-label {
   font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.2em;
   text-transform: uppercase; color: var(--muted); margin-bottom: 2.2rem;
   display: flex; align-items: center; gap: 1rem;
 }
 .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
-.project-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--rule); }
-.project-card {
-  padding: 2rem 0; border-bottom: 1px solid var(--rule);
-  text-decoration: none; color: inherit; display: block;
-  position: relative; transition: background 0.15s; padding-right: 2rem;
-}
-.project-card:nth-child(odd) { padding-right: 3rem; border-right: 1px solid var(--rule); }
-.project-card:nth-child(even) { padding-left: 3rem; padding-right: 0; }
-.project-card:not(.wip):hover .card-title { color: var(--orange); }
-.card-sub { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
-.card-title { font-family: var(--serif); font-size: 1.8rem; font-weight: 400; line-height: 1.1; color: var(--ink); transition: color 0.15s; margin-bottom: 0.6rem; }
-.card-desc { font-size: 0.82rem; font-weight: 300; color: var(--ink2); line-height: 1.65; max-width: 300px; margin-bottom: 0.9rem; }
-.card-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-.card-tag {
-  font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em;
-  padding: 0.18rem 0.5rem; border-radius: 2px;
-  border: 1px solid var(--rule); color: var(--muted);
-}
-.card-tag.aerospace { border-color: #1d4e89; color: #1d4e89; }
-.card-tag.cs { border-color: #3a7d44; color: #3a7d44; }
-.card-tag.research { border-color: #7b3f00; color: #7b3f00; }
-.card-arrow { position: absolute; top: 2rem; right: 0; font-family: var(--mono); font-size: 0.75rem; color: var(--muted); opacity: 0; transition: opacity 0.15s, transform 0.15s; }
-.project-card:not(.wip):hover .card-arrow { opacity: 1; transform: translateX(3px); }
-.wip { opacity: 0.4; cursor: default; pointer-events: none; }
-.wip .card-sub::after { content: ' · soon'; color: var(--orange); opacity: 0.7; }
 
-/* ── BLOG ── */
-.blog-section { border-top: 1px solid var(--rule); }
-.blog-inner { max-width: 900px; margin: 0 auto; padding: 4.5rem 3rem 5rem; }
-
-.blog-list { list-style: none; }
-.blog-item {
-  display: grid; grid-template-columns: 120px 1fr auto;
-  gap: 0 2rem; align-items: baseline;
-  padding: 1.1rem 0; border-bottom: 1px solid var(--rule);
-  cursor: pointer; text-decoration: none; color: inherit;
+.blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+.blog-card {
+  background: var(--cream); border: 1px solid var(--rule); border-radius: 8px;
+  padding: 1.4rem 1.4rem 1.2rem; cursor: pointer;
+  display: flex; flex-direction: column;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
-.blog-item:first-child { border-top: 1px solid var(--rule); }
-.blog-item:hover .blog-title { color: var(--orange); }
-.blog-date { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.06em; padding-top: 0.08rem; }
-.blog-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 400; color: var(--ink); transition: color 0.15s; line-height: 1.3; }
-.blog-tags { display: flex; gap: 0.35rem; }
-.blog-tag {
-  font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.08em;
-  padding: 0.15rem 0.45rem; border-radius: 2px;
-  border: 1px solid var(--rule); color: var(--muted); white-space: nowrap;
+.blog-card:hover { border-color: var(--orange); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(26,24,20,0.08); }
+.blog-card-top { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+.blog-pill {
+  font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.26rem 0.6rem; border-radius: 999px; border: 1px solid var(--rule);
+  background: var(--cream2); color: var(--ink2); white-space: nowrap;
 }
-.blog-tag.aerospace { border-color: #1d4e89; color: #1d4e89; }
-.blog-tag.cs { border-color: #3a7d44; color: #3a7d44; }
-.blog-tag.research { border-color: #7b3f00; color: #7b3f00; }
+.blog-pill.pinned { border-color: var(--orange); color: var(--orange); background: transparent; }
+.blog-card-date { margin-left: auto; font-family: var(--mono); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.03em; white-space: nowrap; }
+.blog-card-title { font-family: var(--serif); font-size: 1.25rem; line-height: 1.25; color: var(--ink); margin-bottom: 0.6rem; transition: color 0.15s; }
+.blog-card:hover .blog-card-title { color: var(--orange); }
+.blog-card-excerpt {
+  font-size: 0.8rem; font-weight: 300; color: var(--ink2); line-height: 1.6; flex: 1; margin-bottom: 1rem;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.blog-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 0.9rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.66rem; color: var(--muted); }
+.blog-card-readtime, .blog-card-likes { display: flex; align-items: center; gap: 0.3rem; }
+.blog-card-likes svg { color: #c23b5a; }
 
 .blog-empty {
-  padding: 3rem 0; text-align: center;
+  grid-column: 1 / -1; padding: 3rem 0; text-align: center;
   font-family: var(--mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em;
 }
 .blog-empty span { display: block; margin-top: 0.5rem; font-size: 0.62rem; opacity: 0.6; }
 
 /* ── BLOG POST MODAL ── */
 #modal-post .modal { max-width: 680px; }
-.post-eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+.post-badges { display: flex; gap: 0.4rem; margin-bottom: 1rem; }
 .post-title { font-family: var(--serif); font-size: 2rem; font-weight: 400; line-height: 1.15; color: var(--ink); margin-bottom: 0.5rem; }
 .post-meta { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
 .post-body { font-size: 0.9rem; color: var(--ink2); line-height: 1.8; font-weight: 300; }
@@ -172,6 +165,7 @@ h1 .dot { color: var(--orange); }
 .post-body h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; color: var(--ink); margin: 1.5rem 0 0.5rem; }
 .post-body code { font-family: var(--mono); font-size: 0.8rem; background: var(--cream2); padding: 0.1em 0.35em; border-radius: 2px; }
 .post-body pre { font-family: var(--mono); font-size: 0.78rem; background: var(--ink); color: var(--cream); padding: 1.2rem; border-radius: 2px; overflow-x: auto; margin: 1rem 0; line-height: 1.6; }
+.post-footer { display: flex; justify-content: space-between; margin-top: 1.6rem; padding-top: 1.1rem; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
 
 /* ── FOOTER ── */
 footer { border-top: 1px solid var(--rule); background: var(--cream2); }
@@ -195,28 +189,77 @@ footer { border-top: 1px solid var(--rule); background: var(--cream2); }
 /* ── MODAL BASE ── */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,24,20,0.55); z-index: 100; align-items: center; justify-content: center; padding: 2rem; }
 .modal-overlay.open { display: flex; }
-.modal { background: var(--cream); border: 1px solid var(--rule); max-width: 560px; width: 100%; padding: 2.5rem; position: relative; max-height: 80vh; overflow-y: auto; }
+.modal { background: var(--cream); border: 1px solid var(--rule); max-width: 560px; width: 100%; padding: 2.5rem; position: relative; max-height: 85vh; overflow-y: auto; }
 .modal h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 400; margin-bottom: 1.2rem; color: var(--ink); }
 .modal p { font-size: 0.82rem; color: var(--ink2); line-height: 1.75; margin-bottom: 0.9rem; font-weight: 300; }
 .modal-close { position: absolute; top: 1.2rem; right: 1.4rem; background: none; border: none; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); cursor: pointer; letter-spacing: 0.1em; }
 .modal-close:hover { color: var(--ink); }
 
+/* ── SUPPORT MODAL ── */
+.support-modal { max-width: 420px; }
+.support-sub { font-size: 0.8rem; color: var(--ink2); margin-bottom: 1.4rem; }
+.amount-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
+.amount-option {
+  font-family: var(--mono); font-size: 0.78rem; font-weight: 500; color: var(--ink2);
+  background: var(--cream2); border: 1px solid var(--rule); border-radius: 6px;
+  padding: 0.6rem 0.3rem; cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.amount-option:hover { border-color: var(--orange); }
+.amount-option.active { background: var(--orange); border-color: var(--orange); color: var(--cream); }
+.custom-amount-row {
+  display: flex; align-items: center; border: 1px solid var(--rule); border-radius: 6px;
+  padding: 0 0.2rem 0 0.85rem; margin-bottom: 1.4rem; background: var(--cream); transition: border-color 0.15s;
+}
+.custom-amount-row:has(input:focus) { border-color: var(--orange); }
+.custom-amount-prefix { font-family: var(--mono); color: var(--muted); font-size: 0.85rem; }
+.custom-amount-row input {
+  flex: 1; width: 100%; border: none; background: transparent; padding: 0.65rem 0.6rem;
+  font-family: var(--mono); font-size: 0.85rem; color: var(--ink); outline: none;
+}
+.support-continue {
+  width: 100%; background: var(--ink); color: var(--cream); border: none; border-radius: 6px;
+  padding: 0.85rem; font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+  cursor: pointer; transition: background 0.15s, opacity 0.15s;
+}
+.support-continue:disabled { opacity: 0.35; cursor: not-allowed; }
+.support-continue:not(:disabled):hover { background: var(--orange); }
+
+.qr-wrap { display: flex; justify-content: center; padding: 1.1rem; background: var(--cream3); border-radius: 8px; margin-bottom: 1.2rem; }
+.qr-wrap canvas { display: block; }
+.upi-id-line {
+  text-align: center; font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+  letter-spacing: 0.03em; cursor: pointer; margin-bottom: 1rem; padding: 0.3rem;
+  border-bottom: 1px dashed var(--rule); display: inline-block;
+  transition: color 0.15s, border-color 0.15s;
+}
+.upi-id-line-wrap { text-align: center; }
+.upi-id-line:hover { color: var(--ink2); border-color: var(--orange); }
+.upi-id-line.copied { color: var(--orange); border-color: var(--orange); }
+.upi-app-btn {
+  display: block; text-align: center; background: var(--orange); color: var(--cream); text-decoration: none;
+  font-family: var(--sans); font-size: 0.85rem; font-weight: 500; border-radius: 6px; padding: 0.8rem;
+  margin-bottom: 0.9rem; transition: opacity 0.15s;
+}
+.upi-app-btn:hover { opacity: 0.9; }
+.support-back { display: block; margin: 0 auto; background: none; border: none; font-family: var(--mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.06em; cursor: pointer; padding: 0.4rem; }
+.support-back:hover { color: var(--ink2); }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   nav { padding: 0 1.5rem; }
-  .banner { height: 160px; }
-  .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 6vh 1.5rem 5vh; }
-  .fields-inner { padding: 1rem 1.5rem; }
-  .projects { padding: 3rem 1.5rem 4rem; }
-  .project-row { grid-template-columns: 1fr; }
-  .project-card:nth-child(odd) { border-right: none; padding-right: 0; }
-  .project-card:nth-child(even) { padding-left: 0; }
+  .support-fab { top: 60px; right: 14px; padding: 0.5rem 0.85rem; font-size: 0.64rem; }
+  .banner-viewport { aspect-ratio: 4 / 3; }
+  .banner-nav { width: 28px; height: 28px; font-size: 1rem; }
+  .hero { padding: 8vh 1.5rem 5vh; }
   .blog-inner { padding: 3rem 1.5rem 4rem; }
-  .blog-item { grid-template-columns: 90px 1fr; }
-  .blog-tags { display: none; }
+  .blog-grid { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; }
   .footer-links { align-items: flex-start; }
   .footer-bottom { padding: 1rem 1.5rem 2rem; flex-direction: column; gap: 1rem; }
+  .amount-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 900px) and (min-width: 641px) {
+  .blog-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -259,40 +302,29 @@ footer { border-top: 1px solid var(--rule); background: var(--cream2); }
   </ul>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-left">
-    <p class="eyebrow">emtypyie.in</p>
-    <h1>Things I<br>build<span class="dot">.</span></h1>
-    <p class="hero-sub">Aerospace R&amp;D meets computer science. Working on systems that fly, compute, and occasionally do both. Mostly unfinished, always in motion.</p>
-    <p class="hero-meta">// Yappin N Buildin.</p>
-  </div>
-  <div class="hero-right">
-    <p class="domain-path">active subdomains</p>
-    <ul class="stat-list">
-      <li><span class="stat-label">Engineering wiki</span><span class="stat-val">wiki.emtypyie.in</span></li>
-      <li><span class="stat-label">Space org</span><span class="stat-val">dosa.emtypyie.in</span></li>
-      <li><span class="stat-label">Interests</span><span class="stat-val">Aerospace · CS</span></li>
-      <li><span class="stat-label">Status</span><span class="stat-val">actively building</span></li>
-      <li><span class="stat-label">Currently</span><span class="stat-val">avionics + sim tooling</span></li>
-      <li><span class="stat-label">Location</span><span class="stat-val">Kolkata, IN</span></li>
-    </ul>
+<!-- FLOATING SUPPORT BUTTON -->
+<button class="support-fab" id="support-fab" type="button" aria-haspopup="dialog">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 12.2C7 12.2 1.2 8.8 1.2 4.9 1.2 2.9 2.8 1.3 4.7 1.3c1 0 2 .5 2.3 1.3.3-.8 1.3-1.3 2.3-1.3 1.9 0 3.5 1.6 3.5 3.6 0 3.9-5.8 7.3-5.8 7.3z"/></svg>
+  Support!
+</button>
+
+<!-- BANNER -->
+<section class="banner-section" id="banner-section">
+  <div class="banner-viewport" id="banner-viewport">
+    <div class="banner-track" id="banner-track"></div>
+    <button class="banner-nav prev" id="banner-prev" aria-label="Previous banner">&#8249;</button>
+    <button class="banner-nav next" id="banner-next" aria-label="Next banner">&#8250;</button>
+    <div class="banner-dots" id="banner-dots"></div>
   </div>
 </section>
 
-<!-- FIELDS STRIP -->
-<div class="fields-strip">
-  <div class="fields-inner">
-    <span class="fields-label">Focus areas</span>
-    <span class="field-tag aerospace active">Aerospace</span>
-    <span class="field-tag active">Propulsion</span>
-    <span class="field-tag active">Avionics</span>
-    <span class="field-tag cs active">Computer Science</span>
-    <span class="field-tag active">Embedded Systems</span>
-    <span class="field-tag active">Simulation</span>
-    <span class="field-tag research active">R&amp;D</span>
-  </div>
-</div>
+<!-- HERO -->
+<section class="hero">
+  <p class="eyebrow">emtypyie.in</p>
+  <h1>Things I<br>build<span class="dot">.</span></h1>
+  <p class="hero-sub">Aerospace R&amp;D meets computer science. Working on systems that fly, compute, and occasionally do both. Mostly unfinished, always in motion.</p>
+  <p class="hero-meta">// Yappin N Buildin.</p>
+</section>
 
 <!-- MANIFESTO -->
 <section class="manifesto">
@@ -303,62 +335,13 @@ footer { border-top: 1px solid var(--rule); background: var(--cream2); }
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section class="projects">
-  <p class="section-label">subdomains &amp; projects</p>
-  <div class="project-row">
-
-    <a class="project-card" href="https://wiki.emtypyie.in">
-      <p class="card-sub">wiki.emtypyie.in</p>
-      <h2 class="card-title">Engineering<br>Wiki</h2>
-      <p class="card-desc">Dev logs, architecture decisions, and technical breakdowns from things I'm actually working on.</p>
-      <div class="card-tags">
-        <span class="card-tag cs">CS</span>
-        <span class="card-tag aerospace">Aerospace</span>
-        <span class="card-tag research">R&amp;D</span>
-      </div>
-      <span class="card-arrow">→</span>
-    </a>
-
-    <a class="project-card" href="https://dosa.emtypyie.in">
-      <p class="card-sub">dosa.emtypyie.in</p>
-      <h2 class="card-title">DOSA</h2>
-      <p class="card-desc">A space project organisation. Missions, research, and the long bet on getting things into orbit.</p>
-      <div class="card-tags">
-        <span class="card-tag aerospace">Aerospace</span>
-        <span class="card-tag research">R&amp;D</span>
-      </div>
-      <span class="card-arrow">→</span>
-    </a>
-
-    <a class="project-card wip" href="#">
-      <p class="card-sub">kodin.emtypyie.in</p>
-      <h2 class="card-title">Kodin</h2>
-      <p class="card-desc">Coming soon. Something to do with code. Presumably.</p>
-      <div class="card-tags">
-        <span class="card-tag cs">CS</span>
-      </div>
-    </a>
-
-    <a class="project-card wip" href="#">
-      <p class="card-sub">?.emtypyie.in</p>
-      <h2 class="card-title">And more</h2>
-      <p class="card-desc">The list keeps growing. It's a problem.</p>
-      <div class="card-tags"></div>
-    </a>
-
-  </div>
-</section>
-
 <!-- BLOG -->
 <section class="blog-section" id="blog">
   <div class="blog-inner">
     <p class="section-label">writing &amp; notes</p>
-    <ul class="blog-list" id="blog-list">
-      <li class="blog-empty">
-        loading posts<span>fetching /blog/*.json</span>
-      </li>
-    </ul>
+    <div class="blog-grid" id="blog-list">
+      <p class="blog-empty">loading posts<span>fetching /blog/*.json</span></p>
+    </div>
   </div>
 </section>
 
@@ -418,7 +401,54 @@ footer { border-top: 1px solid var(--rule); background: var(--cream2); }
   </div>
 </div>
 
+<!-- MODAL: SUPPORT -->
+<div class="modal-overlay" id="modal-support" onclick="if(event.target===this)closeModal()">
+  <div class="modal support-modal">
+    <button class="modal-close" onclick="closeModal()">close ×</button>
+
+    <div id="support-view-amount">
+      <h2>Support emty so we can keep building</h2>
+      <p class="support-sub">Pick an amount, or set your own. It all goes straight back into whatever's next in the queue.</p>
+
+      <div class="amount-grid">
+        <button class="amount-option" data-amount="10" type="button">₹10</button>
+        <button class="amount-option" data-amount="20" type="button">₹20</button>
+        <button class="amount-option" data-amount="50" type="button">₹50</button>
+        <button class="amount-option" data-amount="100" type="button">₹100</button>
+      </div>
+
+      <div class="custom-amount-row">
+        <span class="custom-amount-prefix">₹</span>
+        <input type="number" id="custom-amount-input" placeholder="Custom amount" min="1" inputmode="numeric">
+      </div>
+
+      <button class="support-continue" id="support-continue-btn" type="button" disabled>Continue →</button>
+    </div>
+
+    <div id="support-view-qr" style="display:none;">
+      <h2 id="support-qr-heading">Scan to pay</h2>
+      <p class="support-sub">Scan with any UPI app</p>
+
+      <div class="upi-id-line-wrap">
+        <span class="upi-id-line" id="upi-id-line" title="Click to copy">workforemty@oksbi</span>
+      </div>
+
+      <div class="qr-wrap">
+        <canvas id="upi-qr-canvas"></canvas>
+      </div>
+
+      <a class="upi-app-btn" id="upi-app-link" href="#">Open in UPI app →</a>
+
+      <button class="support-back" id="support-back-btn" type="button">← change amount</button>
+    </div>
+  </div>
+</div>
+
 <script>
+/* ── ICONS ── */
+const HEART_ICON = `<svg width="11" height="11" viewBox="0 0 14 14" fill="currentColor"><path d="M7 12.2C7 12.2 1.2 8.8 1.2 4.9 1.2 2.9 2.8 1.3 4.7 1.3c1 0 2 .5 2.3 1.3.3-.8 1.3-1.3 2.3-1.3 1.9 0 3.5 1.6 3.5 3.6 0 3.9-5.8 7.3-5.8 7.3z"/></svg>`;
+const CLOCK_ICON = `<svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v3.2l2.2 1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
 /* ── MODAL HELPERS ── */
 function openModal(id) {
   document.getElementById('modal-' + id).classList.add('open');
@@ -430,33 +460,132 @@ function closeModal() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-/* ── BLOG LOADER ── */
-/*
-  Place your blog JSON files at:  /blog/DD-MM-YYYY.json
-  The index file at:              /blog/index.json
+/* ── BANNER CAROUSEL ──
+   Drop images at:  https://cdn.emtypyie.in/assets/banner1.jpg, banner2.jpg, banner3.jpg ...
+   (jpg/jpeg/png/webp are all tried automatically — no code changes needed to add or remove a banner,
+   just add/remove the file on the CDN. Gaps in numbering are fine.)
+*/
+const BANNER_BASE = 'https://cdn.emtypyie.in/assets/banner';
+const BANNER_EXTS = ['.jpg', '.jpeg', '.png', '.webp'];
+const BANNER_MAX  = 8;
 
-  index.json format:
-  ["09-06-2026", "05-06-2026", "01-06-2026"]   ← array of date strings, newest first
+function probeImage(url) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve(url);
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+}
 
-  Each post file (e.g. 09-06-2026.json) format:
-  See blog-format.json for the full schema.
+async function loadBanners() {
+  const slots = [];
+  for (let i = 1; i <= BANNER_MAX; i++) {
+    slots.push((async () => {
+      for (const ext of BANNER_EXTS) {
+        const ok = await probeImage(`${BANNER_BASE}${i}${ext}`);
+        if (ok) return { i, url: ok };
+      }
+      return null;
+    })());
+  }
+
+  const results = (await Promise.all(slots)).filter(Boolean).sort((a, b) => a.i - b.i).map(r => r.url);
+  if (!results.length) return; // no banners found — section stays hidden
+
+  const section = document.getElementById('banner-section');
+  const track   = document.getElementById('banner-track');
+  const dots    = document.getElementById('banner-dots');
+
+  track.innerHTML = results.map((url, i) =>
+    `<div class="banner-slide"><img src="${url}" alt="Banner ${i + 1}" loading="${i === 0 ? 'eager' : 'lazy'}"></div>`
+  ).join('');
+  dots.innerHTML = results.map((_, i) => `<span class="banner-dot${i === 0 ? ' active' : ''}" data-index="${i}"></span>`).join('');
+  section.style.display = 'block';
+
+  let current = 0;
+  const total = results.length;
+
+  function goTo(idx) {
+    current = (idx + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.querySelectorAll('.banner-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  document.getElementById('banner-prev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('banner-next').addEventListener('click', () => goTo(current + 1));
+  dots.querySelectorAll('.banner-dot').forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.index, 10))));
+
+  if (total > 1) {
+    let autoplay = setInterval(() => goTo(current + 1), 5000);
+    const viewport = document.getElementById('banner-viewport');
+    viewport.addEventListener('mouseenter', () => clearInterval(autoplay));
+    viewport.addEventListener('mouseleave', () => { autoplay = setInterval(() => goTo(current + 1), 5000); });
+
+    let touchStartX = 0;
+    viewport.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    viewport.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) goTo(current + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+  } else {
+    document.getElementById('banner-prev').style.display = 'none';
+    document.getElementById('banner-next').style.display = 'none';
+    dots.style.display = 'none';
+  }
+}
+loadBanners();
+
+/* ── BLOG LOADER ──
+   Place your blog JSON files at:  /blog/DD-MM-YYYY.json
+   The index file at:              /blog/index.json
+
+   index.json format:
+   ["09-06-2026", "05-06-2026", "01-06-2026"]   ← array of date strings, newest first
+
+   Each post file (e.g. 09-06-2026.json) format:
+   {
+     "date": "20-05-2026",
+     "title": "Culture shouldn't only exist for those who can afford it",
+     "category": "Thoughts",        // shown as the pill on the card — optional, defaults to "Notes"
+     "pinned": true,                 // shows an orange "+ Pinned" pill — optional
+     "excerpt": "A small thought...",// card preview text — optional, auto-derived from the first paragraph if omitted
+     "readTime": "2 min read",       // optional, auto-estimated from word count if omitted
+     "likes": 1,                     // optional, defaults to 0
+     "subtitle": "...",              // optional, shown under the title inside the popup
+     "body": [
+       { "type": "p", "content": "..." },
+       { "type": "h3", "content": "..." },
+       { "type": "code", "content": "..." },
+       { "type": "inline-code", "content": "..." }
+     ]
+   }
 */
 
 let loadedPosts = [];
-const TAG_CLASSES = { aerospace: 'aerospace', cs: 'cs', research: 'research' };
 
 function fmtDate(str) {
   const [d, m, y] = str.split('-');
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+  return `${parseInt(d)} ${months[parseInt(m) - 1]} ${y}`;
 }
 
-function renderTagsHtml(tags, cls) {
-  if (!tags || !tags.length) return '';
-  return tags.map(t => {
-    const tc = TAG_CLASSES[t.toLowerCase()] || '';
-    return `<span class="${cls} ${tc}">${t}</span>`;
-  }).join('');
+function estimateReadTime(body) {
+  const words = (body || [])
+    .map(b => (b.content || '').replace(/<[^>]+>/g, ''))
+    .join(' ')
+    .split(/\s+/)
+    .filter(Boolean).length;
+  const mins = Math.max(1, Math.round(words / 200));
+  return `${mins} min read`;
+}
+
+function deriveExcerpt(post) {
+  if (post.excerpt) return post.excerpt;
+  const firstP = (post.body || []).find(b => b.type === 'p');
+  if (!firstP) return '';
+  const text = firstP.content.replace(/<[^>]+>/g, '');
+  return text.length > 140 ? text.slice(0, 140).trim() + '…' : text;
 }
 
 function renderPostModal(post) {
@@ -468,11 +597,22 @@ function renderPostModal(post) {
     return '';
   }).join('');
 
+  const category = post.category || 'Notes';
+  const readTime = post.readTime || estimateReadTime(post.body);
+  const likes = typeof post.likes === 'number' ? post.likes : 0;
+
   document.getElementById('post-content').innerHTML = `
-    <p class="post-eyebrow">${fmtDate(post.date)} ${post.tags ? '· ' + post.tags.join(' · ') : ''}</p>
+    <div class="post-badges">
+      <span class="blog-pill">${category}</span>
+      ${post.pinned ? '<span class="blog-pill pinned">+ Pinned</span>' : ''}
+    </div>
     <h2 class="post-title">${post.title}</h2>
-    <p class="post-meta">${post.subtitle || ''}</p>
+    <p class="post-meta">${fmtDate(post.date)}${post.subtitle ? ' · ' + post.subtitle : ''}</p>
     <div class="post-body">${bodyHtml}</div>
+    <div class="post-footer">
+      <span class="blog-card-readtime">${CLOCK_ICON} ${readTime}</span>
+      <span class="blog-card-likes">${HEART_ICON} ${likes}</span>
+    </div>
   `;
   openModal('post');
 }
@@ -481,17 +621,28 @@ function renderBlogList(posts) {
   loadedPosts = posts;
   const list = document.getElementById('blog-list');
 
-  list.innerHTML = posts.map((post, i) => `
-    <li class="blog-item" data-index="${i}">
-      <span class="blog-date">${fmtDate(post.date)}</span>
-      <span class="blog-title">${post.title}</span>
-      <div class="blog-tags">${renderTagsHtml(post.tags, 'blog-tag')}</div>
-    </li>
-  `).join('');
+  list.innerHTML = posts.map((post, i) => {
+    const category = post.category || 'Notes';
+    const readTime = post.readTime || estimateReadTime(post.body);
+    const likes = typeof post.likes === 'number' ? post.likes : 0;
+    const excerpt = deriveExcerpt(post);
+    return `
+    <article class="blog-card" data-index="${i}">
+      <div class="blog-card-top">
+        <span class="blog-pill">${category}</span>
+        ${post.pinned ? '<span class="blog-pill pinned">+ Pinned</span>' : ''}
+        <span class="blog-card-date">${fmtDate(post.date)}</span>
+      </div>
+      <h3 class="blog-card-title">${post.title}</h3>
+      <p class="blog-card-excerpt">${excerpt}</p>
+      <div class="blog-card-footer">
+        <span class="blog-card-readtime">${CLOCK_ICON} ${readTime}</span>
+        <span class="blog-card-likes">${HEART_ICON} ${likes}</span>
+      </div>
+    </article>`;
+  }).join('');
 
-  /* attach handlers in JS instead of inline onclick — avoids breaking on
-     quotes/apostrophes inside post titles or content */
-  list.querySelectorAll('.blog-item').forEach(item => {
+  list.querySelectorAll('.blog-card').forEach(item => {
     item.addEventListener('click', () => {
       const idx = parseInt(item.getAttribute('data-index'), 10);
       renderPostModal(loadedPosts[idx]);
@@ -508,16 +659,15 @@ async function loadBlog() {
     if (!r.ok) throw new Error();
     index = await r.json();
   } catch {
-    list.innerHTML = `<li class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></li>`;
+    list.innerHTML = `<p class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></p>`;
     return;
   }
 
   if (!index.length) {
-    list.innerHTML = `<li class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></li>`;
+    list.innerHTML = `<p class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></p>`;
     return;
   }
 
-  /* load all post metadata in parallel */
   const posts = await Promise.all(index.map(async date => {
     try {
       const r = await fetch(`/blog/${date}.json`);
@@ -528,7 +678,7 @@ async function loadBlog() {
 
   const valid = posts.filter(Boolean);
   if (!valid.length) {
-    list.innerHTML = `<li class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></li>`;
+    list.innerHTML = `<p class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></p>`;
     return;
   }
 
@@ -536,6 +686,76 @@ async function loadBlog() {
 }
 
 loadBlog();
+
+/* ── SUPPORT WIDGET ── */
+const UPI_ID = 'workforemty@oksbi';
+const UPI_NAME = 'SUBHADEEP DAS'; // required by the UPI payment link itself (pn= param) so the payer's app shows a valid payee — not displayed anywhere on the page
+let supportAmount = null;
+
+function openSupportModal() {
+  document.getElementById('support-view-amount').style.display = 'block';
+  document.getElementById('support-view-qr').style.display = 'none';
+  document.querySelectorAll('.amount-option').forEach(b => b.classList.remove('active'));
+  document.getElementById('custom-amount-input').value = '';
+  supportAmount = null;
+  updateContinueState();
+  openModal('support');
+}
+
+function updateContinueState() {
+  document.getElementById('support-continue-btn').disabled = !(supportAmount && supportAmount > 0);
+}
+
+document.getElementById('support-fab').addEventListener('click', openSupportModal);
+
+document.querySelectorAll('.amount-option').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.amount-option').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    supportAmount = parseInt(btn.dataset.amount, 10);
+    document.getElementById('custom-amount-input').value = '';
+    updateContinueState();
+  });
+});
+
+document.getElementById('custom-amount-input').addEventListener('input', e => {
+  document.querySelectorAll('.amount-option').forEach(b => b.classList.remove('active'));
+  const val = parseInt(e.target.value, 10);
+  supportAmount = val > 0 ? val : null;
+  updateContinueState();
+});
+
+document.getElementById('support-continue-btn').addEventListener('click', () => {
+  if (!supportAmount) return;
+  const upiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(UPI_NAME)}&am=${supportAmount}&cu=INR&tn=${encodeURIComponent('Support for Emty')}`;
+
+  document.getElementById('support-qr-heading').textContent = `Scan to pay ₹${supportAmount}`;
+  document.getElementById('support-view-amount').style.display = 'none';
+  document.getElementById('support-view-qr').style.display = 'block';
+
+  const canvas = document.getElementById('upi-qr-canvas');
+  if (window.QRCode) {
+    QRCode.toCanvas(canvas, upiUrl, { width: 200, margin: 1, color: { dark: '#1a1814', light: '#f2ede4' } }, err => { if (err) console.error(err); });
+  }
+
+  document.getElementById('upi-app-link').href = upiUrl;
+});
+
+document.getElementById('support-back-btn').addEventListener('click', () => {
+  document.getElementById('support-view-qr').style.display = 'none';
+  document.getElementById('support-view-amount').style.display = 'block';
+});
+
+document.getElementById('upi-id-line').addEventListener('click', () => {
+  const el = document.getElementById('upi-id-line');
+  navigator.clipboard.writeText(UPI_ID).then(() => {
+    const original = el.textContent;
+    el.textContent = 'Copied ✓';
+    el.classList.add('copied');
+    setTimeout(() => { el.textContent = original; el.classList.remove('copied'); }, 1500);
+  });
+});
 </script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" defer></script>
 </body>
 </html>
