@@ -231,8 +231,12 @@ footer { border-top: 1px solid var(--rule); background: var(--cream2); }
 .support-continue:disabled { opacity: 0.35; cursor: not-allowed; }
 .support-continue:not(:disabled):hover { background: var(--orange); }
 
-.qr-wrap { display: flex; justify-content: center; padding: 1.1rem; background: var(--cream3); border-radius: 8px; margin-bottom: 1.2rem; }
-.qr-wrap canvas { display: block; }
+.qr-wrap { display: flex; justify-content: center; align-items: center; padding: 1.1rem; background: var(--cream3); border-radius: 8px; margin-bottom: 1.2rem; min-height: 200px; }
+.qr-wrap canvas, .qr-wrap img { display: block; }
+.qr-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; width: 200px; height: 200px; }
+.qr-spinner { width: 26px; height: 26px; border-radius: 50%; border: 3px solid var(--rule); border-top-color: var(--orange); animation: qr-spin 0.8s linear infinite; }
+.qr-loading-text { font-family: var(--mono); font-size: 0.66rem; color: var(--muted); letter-spacing: 0.05em; }
+@keyframes qr-spin { to { transform: rotate(360deg); } }
 .upi-id-line {
   text-align: center; font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
   letter-spacing: 0.03em; cursor: pointer; margin-bottom: 1rem; padding: 0.3rem;
@@ -744,25 +748,29 @@ document.getElementById('support-continue-btn').addEventListener('click', () => 
   document.getElementById('upi-app-link').href = upiUrl;
 });
 
-/* Renders the QR via the qrcode.js library once it's loaded. If the library
-   is slow to arrive (or fails to load at all — blocked CDN, offline, etc.),
-   this retries for a couple of seconds then falls back to a hosted QR image
-   API so a code always shows up instead of a blank box. */
+/* Renders the QR via the qrcode.js library once it's loaded. Shows a loading
+   spinner the instant the button is clicked (generation isn't instant), retries
+   while the library is still loading, and — only if it never loads — falls back
+   to a hosted QR image API styled to match the page so a code always appears. */
 function generateUpiQr(upiUrl) {
   const wrap = document.querySelector('.qr-wrap');
+  wrap.innerHTML = `
+    <div class="qr-loading">
+      <span class="qr-spinner"></span>
+      <span class="qr-loading-text">Generating QR…</span>
+    </div>`;
+
   let attempts = 0;
+  const MAX_ATTEMPTS = 40; // ~6s of retrying before giving up on the library
 
   function tryRender() {
     if (window.QRCode) {
-      let canvas = document.getElementById('upi-qr-canvas');
-      if (!canvas) {
-        wrap.innerHTML = '<canvas id="upi-qr-canvas"></canvas>';
-        canvas = document.getElementById('upi-qr-canvas');
-      }
+      wrap.innerHTML = '<canvas id="upi-qr-canvas"></canvas>';
+      const canvas = document.getElementById('upi-qr-canvas');
       QRCode.toCanvas(canvas, upiUrl, { width: 200, margin: 1, color: { dark: '#1a1814', light: '#f2ede4' } }, err => {
         if (err) { console.error('QR render error:', err); fallbackQr(); }
       });
-    } else if (attempts < 20) {
+    } else if (attempts < MAX_ATTEMPTS) {
       attempts++;
       setTimeout(tryRender, 150);
     } else {
@@ -771,7 +779,7 @@ function generateUpiQr(upiUrl) {
   }
 
   function fallbackQr() {
-    wrap.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiUrl)}" width="220" height="220" alt="UPI payment QR code">`;
+    wrap.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}&color=1a1814&bgcolor=f2ede4&qzone=1" width="200" height="200" alt="UPI payment QR code">`;
   }
 
   tryRender();
