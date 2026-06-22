@@ -28,6 +28,13 @@
 
 html, body { background: var(--cream); color: var(--ink); font-family: var(--sans); min-height: 100vh; }
 
+/* ── CUSTOM SCROLLBAR ── */
+html { scrollbar-width: thin; scrollbar-color: var(--rule) var(--cream2); }
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-track { background: var(--cream2); }
+*::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 6px; }
+*::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+
 /* ── NAV ── */
 nav {
   position: sticky; top: 0; z-index: 10;
@@ -733,13 +740,42 @@ document.getElementById('support-continue-btn').addEventListener('click', () => 
   document.getElementById('support-view-amount').style.display = 'none';
   document.getElementById('support-view-qr').style.display = 'block';
 
-  const canvas = document.getElementById('upi-qr-canvas');
-  if (window.QRCode) {
-    QRCode.toCanvas(canvas, upiUrl, { width: 200, margin: 1, color: { dark: '#1a1814', light: '#f2ede4' } }, err => { if (err) console.error(err); });
-  }
-
+  generateUpiQr(upiUrl);
   document.getElementById('upi-app-link').href = upiUrl;
 });
+
+/* Renders the QR via the qrcode.js library once it's loaded. If the library
+   is slow to arrive (or fails to load at all — blocked CDN, offline, etc.),
+   this retries for a couple of seconds then falls back to a hosted QR image
+   API so a code always shows up instead of a blank box. */
+function generateUpiQr(upiUrl) {
+  const wrap = document.querySelector('.qr-wrap');
+  let attempts = 0;
+
+  function tryRender() {
+    if (window.QRCode) {
+      let canvas = document.getElementById('upi-qr-canvas');
+      if (!canvas) {
+        wrap.innerHTML = '<canvas id="upi-qr-canvas"></canvas>';
+        canvas = document.getElementById('upi-qr-canvas');
+      }
+      QRCode.toCanvas(canvas, upiUrl, { width: 200, margin: 1, color: { dark: '#1a1814', light: '#f2ede4' } }, err => {
+        if (err) { console.error('QR render error:', err); fallbackQr(); }
+      });
+    } else if (attempts < 20) {
+      attempts++;
+      setTimeout(tryRender, 150);
+    } else {
+      fallbackQr();
+    }
+  }
+
+  function fallbackQr() {
+    wrap.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiUrl)}" width="220" height="220" alt="UPI payment QR code">`;
+  }
+
+  tryRender();
+}
 
 document.getElementById('support-back-btn').addEventListener('click', () => {
   document.getElementById('support-view-qr').style.display = 'none';
@@ -756,6 +792,6 @@ document.getElementById('upi-id-line').addEventListener('click', () => {
   });
 });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
 </body>
 </html>
