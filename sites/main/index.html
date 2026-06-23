@@ -196,11 +196,12 @@ nav {
   font-size: 1.35rem; font-weight: 500; color: var(--ink);
   line-height: 1;
 }
-/* Make ∞ match the height of numeric stat-nums */
+/* Make ∞ match the visual height of numeric stat-nums */
 .stat-num.inf-symbol {
-  font-size: 1.7rem;
-  line-height: 0.85;
-  vertical-align: middle;
+  font-size: 2.2rem;
+  line-height: 0.7;
+  display: inline-block;
+  transform: translateY(0.1rem);
 }
 .stat-label { color: var(--muted); letter-spacing: 0.04em; }
 
@@ -221,6 +222,67 @@ nav {
 .quote-attribution {
   font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--muted); margin-top: 1.1rem;
+}
+
+/* ── HERO FEATURE CARDS ── */
+.hero-feature-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+.hero-feature-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1.1rem 1.2rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--bg2);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.18s, transform 0.15s, box-shadow 0.18s;
+}
+.hero-feature-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+.hero-feature-card:hover {
+  border-color: var(--orange);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+.hero-feature-card:hover::before { transform: scaleX(1); }
+
+.hero-fc-top {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.hero-fc-label {
+  font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--muted);
+}
+.hero-fc-arrow {
+  color: var(--muted);
+  transition: color 0.15s, transform 0.15s;
+}
+.hero-feature-card:hover .hero-fc-arrow {
+  color: var(--orange);
+  transform: translate(2px, -2px);
+}
+.hero-fc-name {
+  font-family: var(--mono); font-size: 1.05rem; font-weight: 500;
+  color: var(--ink); letter-spacing: -0.01em;
+  transition: color 0.15s;
+}
+.hero-feature-card:hover .hero-fc-name { color: var(--orange); }
+.hero-fc-desc {
+  font-size: 0.72rem; font-weight: 300; color: var(--ink2);
+  line-height: 1.55;
 }
 
 /* ── WRITING SECTION ── */
@@ -586,6 +648,8 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
   .book-info { padding: 1.5rem 1.4rem; }
   .book-title { font-size: 1.6rem; }
 
+  .hero-feature-cards { grid-template-columns: 1fr 1fr; }
+
   .blog-inner { padding: 3rem 1.4rem 3.5rem; }
   .blog-grid { grid-template-columns: 1fr; }
 
@@ -757,6 +821,25 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
         <span class="stat-num inf-symbol">∞</span>
         <span class="stat-label">coffees</span>
       </div>
+    </div>
+
+    <div class="hero-feature-cards">
+      <a class="hero-feature-card" href="https://wiki.emtypyie.in" target="_blank" rel="noopener">
+        <div class="hero-fc-top">
+          <span class="hero-fc-label">Knowledge base</span>
+          <svg class="hero-fc-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="12" x2="12" y2="2"/><polyline points="5,2 12,2 12,9"/></svg>
+        </div>
+        <div class="hero-fc-name">Wiki</div>
+        <div class="hero-fc-desc">Notes, research, and things worth remembering.</div>
+      </a>
+      <a class="hero-feature-card" href="https://dosa.emtypyie.in" target="_blank" rel="noopener">
+        <div class="hero-fc-top">
+          <span class="hero-fc-label">Side project</span>
+          <svg class="hero-fc-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="12" x2="12" y2="2"/><polyline points="5,2 12,2 12,9"/></svg>
+        </div>
+        <div class="hero-fc-name">Dosa</div>
+        <div class="hero-fc-desc">Something I built and can't quite explain yet.</div>
+      </a>
     </div>
   </div>
 </section>
