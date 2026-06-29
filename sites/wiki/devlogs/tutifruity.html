@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TutiFruITy chAn is a tsundere Discord bot written in Python" />
+  <title>wiki TutiFruITy chAn</title>
+  <style>
+    /* ─── DESIGN TOKENS ──────────────────────────────────────── */
+    :root {
+      --bg:           #F4EFE6;
+      --surface:      #EDE7DA;
+      --surface-2:    #E5DDD0;
+      --border:       #C9BEB0;
+      --border-light: #DDD6CA;
+      --text:         #1C1917;
+      --text-muted:   #6B6152;
+      --text-faint:   #9A8F82;
+      --accent:       #B5306F;
+      --accent-hover: #93255A;
+      --accent-dim:   #FCE7F3;
+      --green:        #2F6B3E;
+      --green-bg:     #DCFCE7;
+      --amber:        #92400E;
+      --amber-bg:     #FEF3C7;
+      --slate:        #334155;
+      --slate-bg:     #E2E8F0;
+      --code-bg:      #201C18;
+      --code-text:    #E8DFD0;
+      --code-border:  #302A24;
+      --shadow:       0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md:    0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+      --radius:       3px;
+      --font-serif:   'Georgia', 'Times New Roman', serif;
+      --font-sans:    system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+      --font-mono:    'Courier New', 'Lucida Console', Courier, monospace;
+      --max-w:        900px;
+      --nav-h:        52px;
+    }
+
+    [data-theme="dark"] {
+      --bg:           #0E0D0B;
+      --surface:      #181614;
+      --surface-2:    #201E1A;
+      --border:       #2C2924;
+      --border-light: #252220;
+      --text:         #E8E2D6;
+      --text-muted:   #8C8274;
+      --text-faint:   #5A5248;
+      --accent:       #F472B6;
+      --accent-hover: #FB7DC2;
+      --accent-dim:   #1F0F17;
+      --green:        #4ADE80;
+      --green-bg:     #052E16;
+      --amber:        #FCD34D;
+      --amber-bg:     #1C1100;
+      --slate:        #94A3B8;
+      --slate-bg:     #0F172A;
+      --code-bg:      #0A0907;
+      --code-text:    #D4C9B4;
+      --code-border:  #1E1C18;
+      --shadow:       0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md:    0 4px 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.65;
+      min-height: 100vh;
+      transition: background 0.2s, color 0.2s;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── TEXTURE OVERLAY ────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(circle, var(--border) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.3;
+    }
+    [data-theme="dark"] body::before { opacity: 0.12; }
+
+    /* ─── NAVBAR ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      z-index: 100;
+      transition: background 0.2s;
+    }
+    .nav-inner {
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+    }
+    .nav-brand .slash { color: var(--text-faint); margin: 0 5px; }
+    .nav-brand .wiki-part { color: var(--accent); font-weight: 700; }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      color: var(--text);
+      border-color: var(--text-muted);
+      background: var(--surface);
+    }
+    .nav-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ─── PAGE ───────────────────────────────────────────────── */
+    .page {
+      position: relative;
+      z-index: 1;
+      padding-top: var(--nav-h);
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    /* ─── BREADCRUMB ─────────────────────────────────────────── */
+    .breadcrumb {
+      padding: 20px 0 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb .sep { color: var(--border); }
+
+    /* ─── PROJECT HEADER ─────────────────────────────────────── */
+    .project-header {
+      padding: 32px 0 40px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .project-title {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+    .badge-active  { color: var(--green);  background: var(--green-bg);  border-color: color-mix(in srgb, var(--green)  25%, transparent); }
+    .badge-paused  { color: var(--amber);  background: var(--amber-bg);  border-color: color-mix(in srgb, var(--amber)  25%, transparent); }
+    .badge-completed { color: var(--slate); background: var(--slate-bg); border-color: color-mix(in srgb, var(--slate) 25%, transparent); }
+
+    .project-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .meta-item {
+      padding: 10px 16px;
+      border-right: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background: var(--surface);
+    }
+    .meta-item:last-child { border-right: none; }
+    .meta-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .meta-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .meta-val a { color: var(--accent); }
+    .meta-val a:hover { color: var(--accent-hover); }
+
+    /* ─── TOC ────────────────────────────────────────────────── */
+    .toc {
+      padding: 20px 0 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .toc-link {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      padding: 4px 10px;
+      border: 1px solid var(--border-light);
+      border-radius: 2px;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+    .toc-link:hover {
+      color: var(--accent);
+      background: var(--surface);
+      border-color: var(--border);
+    }
+
+    /* ─── CONTENT SECTIONS ───────────────────────────────────── */
+    .content { padding: 0 0 40px; }
+
+    .doc-section {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .doc-section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+    }
+    .section-name {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .prose {
+      max-width: 680px;
+      color: var(--text-muted);
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+    .prose p + p { margin-top: 14px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+    .prose code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      background: var(--surface-2);
+      color: var(--accent);
+      padding: 1px 5px;
+      border-radius: 2px;
+      border: 1px solid var(--border-light);
+    }
+    .prose ul {
+      margin: 14px 0;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .prose ul li { color: var(--text-muted); font-size: 14.5px; }
+    .prose ul li::marker { color: var(--accent); }
+    .prose .placeholder-note {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      margin-top: 10px;
+      display: block;
+    }
+
+    /* ─── CONTRIBUTORS ───────────────────────────────────────── */
+    .contributors-section {
+      padding: 36px 0 32px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .contributors-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 16px;
+    }
+    .contributors-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .contributor-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px 8px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      transition: border-color 0.15s, background 0.15s;
+      text-decoration: none;
+    }
+    .contributor-card:hover {
+      border-color: var(--border);
+      background: var(--surface-2);
+    }
+    .contributor-pfp {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .contributor-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .contributor-name {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text);
+      font-weight: 600;
+    }
+    .contributor-role {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+    }
+    .contributor-open {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      padding: 4px 12px;
+      border: 1px dashed var(--border);
+      border-radius: 2px;
+      background: var(--surface);
+    }
+
+    /* ─── FILE LABEL ─────────────────────────────────────────── */
+    .file-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      margin-bottom: 6px;
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .file-label::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      opacity: 0.5;
+      border-radius: 1px;
+    }
+
+    /* ─── CODE BLOCK ─────────────────────────────────────────── */
+    .code-block {
+      margin: 8px 0 20px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--code-border);
+      background: var(--code-bg);
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--code-border);
+      background: color-mix(in srgb, var(--code-bg) 60%, black);
+    }
+    .code-lang {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .code-copy {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .code-copy:hover { color: var(--accent); }
+    pre {
+      margin: 0;
+      overflow-x: auto;
+    }
+    pre code {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.75;
+      color: var(--code-text);
+      padding: 16px 18px;
+      background: none;
+      border: none;
+    }
+
+    /* Syntax coloring */
+    .tok-kw    { color: #D4845A; }
+    .tok-fn    { color: #86C4C0; }
+    .tok-str   { color: #94C685; }
+    .tok-cmt   { color: #5A5248; font-style: italic; }
+    .tok-num   { color: #C4A97A; }
+    .tok-type  { color: #C4A97A; }
+    .tok-dec   { color: #A89BD4; }
+    .tok-cls   { color: #E8C97A; }
+
+    /* ─── DEV LOGS ───────────────────────────────────────────── */
+    .devlogs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .log-entry {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0 28px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-meta { padding-top: 3px; flex-shrink: 0; }
+    .log-date {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      white-space: nowrap;
+    }
+    .log-index {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--border);
+      letter-spacing: 0.1em;
+      margin-top: 3px;
+    }
+    .log-version {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+      opacity: 0.8;
+    }
+    .log-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .log-content {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: 620px;
+    }
+    .log-content p + p { margin-top: 12px; }
+    .log-content strong { color: var(--text); font-weight: 600; }
+    .log-content code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: var(--surface-2);
+      color: var(--accent);
+      padding: 1px 5px;
+      border-radius: 2px;
+      border: 1px solid var(--border-light);
+    }
+
+    /* Status notice */
+    .status-notice {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: var(--amber-bg);
+      border: 1px solid color-mix(in srgb, var(--amber) 30%, transparent);
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--amber);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      max-width: 620px;
+    }
+    .status-notice-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ─── LIKE / SHARE BAR ───────────────────────────────────── */
+    .action-bar {
+      padding: 28px 0;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .action-btn:hover {
+      border-color: var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+    }
+    .action-btn.liked {
+      color: var(--accent);
+      border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+      background: var(--accent-dim);
+    }
+    .action-btn svg { width: 14px; height: 14px; }
+    .action-sep {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+    #shareToast {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--green);
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      margin-top: 40px;
+    }
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 24px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .footer-brand {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+    .footer-brand span { color: var(--accent); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      nav { padding: 0 16px; }
+      .page { padding-left: 16px; padding-right: 16px; }
+      .log-entry { grid-template-columns: 1fr; gap: 6px; }
+      .meta-row { flex-wrap: wrap; }
+      .meta-item { flex: 1 1 auto; min-width: 120px; }
+      .header-top { flex-direction: column; gap: 8px; }
+      .badge { margin-top: 0; }
+      .nav-btn span { display: none; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .action-bar { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">
+        tutifruity-chan
+        <span class="slash">/</span>
+        <span class="wiki-part">devlog</span>
+      </a>
+      <div class="nav-actions">
+        <button class="nav-btn" id="themeToggle" aria-label="Toggle theme">
+          <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <span id="themeLabel">light</span>
+        </button>
+        <!-- TODO: point this at your own repo once it's pushed -->
+        <a href="#" class="nav-btn" title="Add your repo link here">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+          <span>github</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page" style="padding-top: calc(var(--nav-h) + 0px)">
+
+    <!-- ── BREADCRUMB ── -->
+    <div class="breadcrumb">
+      <a href="/">wiki</a>
+      <span class="sep">/</span>
+      <span>TutiFruITy chAn</span>
+    </div>
+
+    <!-- ── PROJECT HEADER ── -->
+    <header class="project-header">
+      <div class="header-top">
+        <h1 class="project-title">TutiFruITy chAn</h1>
+        <span class="badge badge-active">Active</span>
+      </div>
+      <p class="project-desc">
+        A multi-purpose Discord bot with a playful, sarcastic tsundere personality - moderation,
+        manga lookups, and dumb sarcastic quotes, all routed through one centralized personality
+        engine so she never sounds like a generic command-response bot.
+      </p>
+      <div class="meta-row">
+        <div class="meta-item">
+          <span class="meta-label">Started</span>
+          <span class="meta-val">2026-06-28</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Last updated</span>
+          <span class="meta-val">2026-06-29</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Language</span>
+          <span class="meta-val">Python (discord.py)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Source</span>
+          <!-- TODO: swap for a real link once you push this somewhere -->
+          <span class="meta-val">private, not published yet</span>
+        </div>
+      </div>
+
+      <!-- TOC -->
+      <div class="toc">
+        <a href="#contributors" class="toc-link">§0 Contributors</a>
+        <a href="#overview"     class="toc-link">§1 Overview</a>
+        <a href="#why"          class="toc-link">§2 Why I built this</a>
+        <a href="#architecture" class="toc-link">§3 Architecture</a>
+        <a href="#devlogs"      class="toc-link">§4 Dev Logs</a>
+      </div>
+    </header>
+
+    <!-- ── CONTENT ── -->
+    <div class="content">
+
+      <!-- §0 CONTRIBUTORS -->
+      <section class="contributors-section doc-section" id="contributors">
+        <div class="section-label">
+          <span class="section-num">§0</span>
+          <span class="section-name">Contributors</span>
+        </div>
+        <div class="contributors-list">
+          <!-- TODO: replace with your own name/handle and github link -->
+          <a href="#" class="contributor-card">
+            <span class="contributor-pfp">T</span>
+            <div class="contributor-info">
+              <span class="contributor-name">you</span>
+              <span class="contributor-role">creator &amp; maintainer</span>
+            </div>
+          </a>
+        </div>
+        <span class="contributor-open">add your repo link to open this up for contributions</span>
+      </section>
+
+      <!-- §1 OVERVIEW -->
+      <section class="doc-section" id="overview">
+        <div class="section-label">
+          <span class="section-num">§1</span>
+          <span class="section-name">Overview</span>
+        </div>
+        <div class="prose">
+          <p>
+            <strong>TutiFruITy chAn</strong> is a slash-command-only Discord bot built on
+            <code>discord.py</code> 2.7. Every reply she gives is pulled from a centralized
+            personality system instead of being hardcoded per-command, so she can have moods
+            without the command logic ever knowing or caring what she actually says.
+          </p>
+          <p>
+            Core features:
+          </p>
+          <ul>
+            <li>Centralized tsundere personality engine - dozens of randomized lines per situation, kaomoji included</li>
+            <li>Moderation suite: <code>/ban</code> <code>/kick</code> <code>/timeout</code> <code>/untimeout</code> <code>/purge</code> <code>/warn</code></li>
+            <li><code>/modrole</code> - delegate moderation access to a role without touching native Discord permissions</li>
+            <li><code>/sauce</code> - MangaDex-backed manga lookup: random pulls, genre/theme filters with live autocomplete, cover art</li>
+            <li><code>/randomquote</code> - a pool of mostly sarcastic, troll-tier one-liners</li>
+            <li>Music - currently disabled, mid-rebuild around the Spotify API (see dev log #2)</li>
+          </ul>
+          <p>
+            One shared SQLite connection handles warnings and mod-role config - no module ever
+            opens its own.
+          </p>
+        </div>
+      </section>
+
+      <!-- §2 WHY -->
+      <section class="doc-section" id="why">
+        <div class="section-label">
+          <span class="section-num">§2</span>
+          <span class="section-name">Why I built this</span>
+        </div>
+        <div class="prose">
+          <p>
+            Most moderation bots feel the same - same dry embeds, same robotic "Banned." I wanted
+            something that still does the job properly (bans happen, warnings get logged, channels
+            get purged) but acts mildly inconvenienced about doing it the whole time.
+          </p>
+          <p>
+            It also turned into a decent crash course in discord.py's <code>app_commands</code>
+            system - cogs, custom permission checks, autocomplete, error handling - in a way a toy
+            project doesn't usually force you to learn.
+          </p>
+          <span class="placeholder-note">
+            ^ this section is a draft - rewrite it in your own words, I'm just guessing at your actual reasons.
+          </span>
+        </div>
+      </section>
+
+      <!-- §3 ARCHITECTURE -->
+      <section class="doc-section" id="architecture">
+        <div class="section-label">
+          <span class="section-num">§3</span>
+          <span class="section-name">Architecture / Design</span>
+        </div>
+        <div class="prose">
+          <p>
+            <code>main.py</code> creates the bot, opens the single SQLite connection, and loads
+            every module as a cog. <code>functions.py</code> holds nothing but reusable helpers -
+            the personality response system, permission checks, db helpers - no commands live
+            there. <code>moderation.py</code>, <code>utility.py</code>, <code>sauce.py</code>, and
+            <code>music.py</code> (currently unloaded) each hold one module's worth of slash
+            commands and nothing else.
+          </p>
+        </div>
+
+        <!-- main.py -->
+        <div class="file-label">main.py</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">python</span>
+            <button class="code-copy" onclick="copyCode(this)">copy</button>
+          </div>
+          <pre><code><span class="tok-kw">class</span> <span class="tok-cls">TsundereBot</span>(commands.Bot):
+    <span class="tok-kw">def</span> <span class="tok-fn">__init__</span>(self) -> <span class="tok-kw">None</span>:
+        intents = discord.Intents.<span class="tok-fn">default</span>()
+        intents.message_content = <span class="tok-kw">True</span>
+        intents.members = <span class="tok-kw">True</span>
+        intents.voice_states = <span class="tok-kw">True</span>
+
+        <span class="tok-fn">super</span>().<span class="tok-fn">__init__</span>(command_prefix=<span class="tok-str">"!"</span>, intents=intents)
+
+        <span class="tok-cmt"># Single, shared SQLite connection - never opened anywhere else.</span>
+        self.db: sqlite3.Connection = sqlite3.<span class="tok-fn">connect</span>(config.DATABASE_PATH)
+        self.db.row_factory = sqlite3.Row
+        self.<span class="tok-fn">_init_database</span>()
+
+    <span class="tok-kw">async def</span> <span class="tok-fn">setup_hook</span>(self) -> <span class="tok-kw">None</span>:
+        <span class="tok-kw">for</span> extension <span class="tok-kw">in</span> INITIAL_EXTENSIONS:
+            <span class="tok-kw">try</span>:
+                <span class="tok-kw">await</span> self.<span class="tok-fn">load_extension</span>(extension)
+                log.<span class="tok-fn">info</span>(<span class="tok-str">"Loaded extension: %s"</span>, extension)
+            <span class="tok-kw">except</span> <span class="tok-cls">Exception</span>:
+                log.<span class="tok-fn">exception</span>(<span class="tok-str">"Failed to load extension: %s"</span>, extension)
+
+        synced = <span class="tok-kw">await</span> self.tree.<span class="tok-fn">sync</span>()
+        log.<span class="tok-fn">info</span>(<span class="tok-str">"Synced %d slash command(s)."</span>, <span class="tok-fn">len</span>(synced))</code></pre>
+        </div>
+
+        <!-- functions.py -->
+        <div class="file-label">functions.py</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">python</span>
+            <button class="code-copy" onclick="copyCode(this)">copy</button>
+          </div>
+          <pre><code><span class="tok-kw">def</span> <span class="tok-fn">get_response</span>(category: str, **kwargs) -> str:
+    <span class="tok-str">"""
+    Return a random tsundere line for the given category.
+    Supports str.format kwargs (e.g. latency=42).
+    Falls back to UNKNOWN_ERROR if the category doesn't exist.
+    """</span>
+    pool = RESPONSES.<span class="tok-fn">get</span>(category, RESPONSES[<span class="tok-str">"UNKNOWN_ERROR"</span>])
+    line = random.<span class="tok-fn">choice</span>(pool)
+    <span class="tok-kw">if</span> kwargs:
+        <span class="tok-kw">try</span>:
+            line = line.<span class="tok-fn">format</span>(**kwargs)
+        <span class="tok-kw">except</span> (<span class="tok-cls">KeyError</span>, <span class="tok-cls">IndexError</span>):
+            <span class="tok-kw">pass</span>
+    <span class="tok-kw">return</span> line</code></pre>
+        </div>
+      </section>
+
+      <!-- §4 DEV LOGS -->
+      <section class="doc-section" id="devlogs">
+        <div class="section-label">
+          <span class="section-num">§4</span>
+          <span class="section-name">Dev Logs</span>
+        </div>
+
+        <div class="devlogs-list">
+
+          <!-- Log Entry 3 -->
+          <div class="log-entry">
+            <div class="log-meta">
+              <div class="log-date">2026-06-29</div>
+              <div class="log-index">log #3</div>
+              <div class="log-version">v1.1.1</div>
+            </div>
+            <div class="log-body">
+              <div class="log-title">v1.1.1 — Logger name patch</div>
+              <div class="log-content">
+                <p>
+                  Tiny one. Every console line was prefixed <code>tsundere-bot:</code> no matter
+                  what the bot was actually named on Discord - a leftover from early scaffolding
+                  that nobody updated. Pulled it into a <code>BOT_NAME</code> env var instead, so
+                  the logs now read <code>TutiFruity-chan:</code> and stay correct if she ever gets
+                  renamed again.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Log Entry 2 -->
+          <div class="log-entry">
+            <div class="log-meta">
+              <div class="log-date">2026-06-28</div>
+              <div class="log-index">log #2</div>
+              <div class="log-version">v1.1.0</div>
+            </div>
+            <div class="log-body">
+              <div class="log-title">v1.1.0 — Sauce overhaul, /modrole, music paused for Spotify</div>
+              <div class="log-content">
+                <p>
+                  Turns out <code>/sauce random</code> was broken from the start. MangaDex's
+                  <code>/manga/random</code> endpoint only returns a single entity and rejects
+                  unexpected query params like <code>limit</code> - it was silently 400ing on every
+                  call and quietly falling through to "not found." Rebuilt it around the documented
+                  <code>/manga</code> search endpoint instead: probe the total match count for the
+                  given filters, then re-query at a random offset into that count.
+                </p>
+              </div>
+
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-lang">python</span>
+                  <button class="code-copy" onclick="copyCode(this)">copy</button>
+                </div>
+                <pre><code><span class="tok-kw">async def</span> <span class="tok-fn">_random_manga</span>(self, tag_ids=<span class="tok-kw">None</span>):
+    probe = <span class="tok-kw">await</span> self.<span class="tok-fn">_get</span>(<span class="tok-str">"/manga"</span>, [*base_params, (<span class="tok-str">"limit"</span>, <span class="tok-str">"1"</span>), (<span class="tok-str">"offset"</span>, <span class="tok-str">"0"</span>)])
+    total = probe.<span class="tok-fn">get</span>(<span class="tok-str">"total"</span>, <span class="tok-num">0</span>)
+    offset = random.<span class="tok-fn">randint</span>(<span class="tok-num">0</span>, <span class="tok-fn">min</span>(total - <span class="tok-num">1</span>, <span class="tok-num">9999</span>))
+    data = <span class="tok-kw">await</span> self.<span class="tok-fn">_get</span>(<span class="tok-str">"/manga"</span>, [*base_params, (<span class="tok-str">"limit"</span>, <span class="tok-str">"1"</span>), (<span class="tok-str">"offset"</span>, <span class="tok-fn">str</span>(offset))])
+    <span class="tok-kw">return</span> data[<span class="tok-str">"data"</span>][<span class="tok-num">0</span>]</code></pre>
+              </div>
+
+              <div class="log-content">
+                <p>
+                  The same trick now powers <code>/sauce category</code> too - genre and theme
+                  filters with live autocomplete pulled straight from MangaDex's own tag list, plus
+                  cover art on every result.
+                </p>
+                <p>
+                  Also shipped <code>/modrole</code> so a server can delegate the moderation
+                  commands to a role without granting real Discord permissions, added
+                  <code>/randomquote</code>, and sprinkled kaomoji through the personality lines.
+                  Music got disabled - it's being rebuilt around the Spotify API instead of
+                  YouTube, which is a bigger architectural change than a patch.
+                </p>
+              </div>
+
+              <div class="status-notice">
+                <span class="status-notice-icon">⚠</span>
+                <span>
+                  <strong>Known limitation:</strong> Spotify's API doesn't hand you raw audio to
+                  stream the way <code>yt-dlp</code> did - it's metadata plus remote control of an
+                  active Spotify Connect session on a Premium account. The music module needs a
+                  different architecture, not just a swapped extractor. Tracked for a future pass.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Log Entry 1 -->
+          <div class="log-entry">
+            <div class="log-meta">
+              <div class="log-date">2026-06-28</div>
+              <div class="log-index">log #1</div>
+              <div class="log-version">v1.0.0</div>
+            </div>
+            <div class="log-body">
+              <div class="log-title">Initial release — personality engine, moderation, sauce, music</div>
+              <div class="log-content">
+                <p>
+                  First build. Got the full module structure up from spec: <code>main.py</code>
+                  wires the bot and the one shared SQLite connection, <code>functions.py</code>
+                  centralizes the tsundere <code>RESPONSES</code> dict behind a single
+                  <code>get_response()</code> call, and moderation/utility/music/sauce each became
+                  their own cog.
+                </p>
+                <p>
+                  First boot hit two real-world snags immediately: discord.py now requires a
+                  separate <code>davey</code> package for Discord's mandatory E2EE voice protocol,
+                  and FFmpeg wasn't on PATH yet for music playback. Both fixed before
+                  <code>/play</code> ever successfully ran. YouTube also intermittently blocked
+                  <code>yt-dlp</code> with a "confirm you're not a bot" check - spoofing the
+                  Android/iOS client in the extractor args cleared most of it, with a
+                  browser-cookie fallback for the rest. Moot for now since music is disabled, but
+                  worth keeping around for the Spotify rebuild if YouTube ever comes back as a
+                  fallback source.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /devlogs-list -->
+      </section>
+
+      <!-- ── LIKE / SHARE ── -->
+      <div class="action-bar">
+        <button class="action-btn" id="likeBtn" onclick="handleLike()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
+            <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+          </svg>
+          <span id="likeCount">0</span>
+        </button>
+        <span class="action-sep">·</span>
+        <button class="action-btn" onclick="handleShare()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          copy link
+        </button>
+        <span id="shareToast">✓ copied</span>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- ── FOOTER ── -->
+    <footer style="margin-left: -24px; margin-right: -24px;">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          tutifruity-chan / <span>devlog</span>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /page -->
+
+  <script>
+    /* ── THEME ─────────────────────────────────────────────── */
+    const html       = document.documentElement;
+    const toggle     = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
+    const themeIcon  = document.getElementById('themeIcon');
+
+    const MOON_SVG = `<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>`;
+    const SUN_SVG  = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
+    function applyTheme(t) {
+      html.setAttribute('data-theme', t);
+      localStorage.setItem('tutifruity-devlog-theme', t);
+      themeLabel.textContent = t;
+      themeIcon.innerHTML = t === 'dark' ? MOON_SVG : SUN_SVG;
+      const isDark = t === 'dark';
+      themeIcon.setAttribute('fill', isDark ? 'currentColor' : 'none');
+      if (!isDark) {
+        themeIcon.setAttribute('stroke', 'currentColor');
+        themeIcon.setAttribute('stroke-width', '2');
+        themeIcon.setAttribute('stroke-linecap', 'round');
+        themeIcon.setAttribute('stroke-linejoin', 'round');
+      }
+    }
+
+    const saved = localStorage.getItem('tutifruity-devlog-theme') || 'light';
+    applyTheme(saved);
+
+    toggle.addEventListener('click', () => {
+      const cur = html.getAttribute('data-theme');
+      applyTheme(cur === 'dark' ? 'light' : 'dark');
+    });
+
+    /* ── LIKE SYSTEM (local-only, no external API) ──────────── */
+    const COOLDOWN   = 24 * 60 * 60 * 1000;
+    const LIKE_KEY   = 'tutifruity_devlog_liked';
+    const COUNT_KEY  = 'tutifruity_devlog_like_count';
+
+    const likeBtn   = document.getElementById('likeBtn');
+    const likeCount = document.getElementById('likeCount');
+
+    function getCount() {
+      return parseInt(localStorage.getItem(COUNT_KEY) || '0', 10);
+    }
+
+    function isLiked() {
+      const ts = localStorage.getItem(LIKE_KEY);
+      return ts && (Date.now() - parseInt(ts, 10)) < COOLDOWN;
+    }
+
+    function markLiked() {
+      likeBtn.classList.add('liked');
+      likeBtn.title = 'Already liked (cooldown active)';
+    }
+
+    function handleLike() {
+      if (isLiked()) {
+        likeBtn.classList.add('liked');
+        return;
+      }
+      localStorage.setItem(LIKE_KEY, Date.now().toString());
+      localStorage.setItem(COUNT_KEY, (getCount() + 1).toString());
+      likeCount.textContent = getCount();
+      markLiked();
+    }
+
+    likeCount.textContent = getCount();
+    if (isLiked()) markLiked();
+
+    /* ── SHARE SYSTEM ───────────────────────────────────────── */
+    const shareToast = document.getElementById('shareToast');
+    let toastTimeout;
+
+    async function handleShare() {
+      const url = window.location.href;
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        const el = document.createElement('textarea');
+        el.value = url;
+        el.style.cssText = 'position:fixed;top:-999px;left:-999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        el.remove();
+      }
+      shareToast.style.opacity = '1';
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => { shareToast.style.opacity = '0'; }, 2000);
+    }
+
+    /* ── CODE COPY ──────────────────────────────────────────── */
+    function copyCode(btn) {
+      const pre  = btn.closest('.code-block').querySelector('pre code');
+      const text = pre.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'copied!';
+        setTimeout(() => { btn.textContent = orig; }, 1500);
+      });
+    }
+
+    /* ── SMOOTH TOC SCROLL ──────────────────────────────────── */
+    document.querySelectorAll('.toc-link').forEach(link => {
+      link.addEventListener('click', e => {
+        const id = link.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          const top = el.getBoundingClientRect().top + window.scrollY - 70;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+
+    /* ── ACTIVE TOC HIGHLIGHT ───────────────────────────────── */
+    const sections  = document.querySelectorAll('.doc-section[id]');
+    const tocLinks  = document.querySelectorAll('.toc-link');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(l => l.style.color = '');
+          const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+          if (active) active.style.color = 'var(--accent)';
+        }
+      });
+    }, { rootMargin: `-${parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'))}px 0px -60% 0px` });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>
