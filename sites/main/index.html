@@ -1026,7 +1026,7 @@ function showToast(msg) {
 
 function sharePost(post, e) {
   if (e) e.stopPropagation();
-  const url = window.location.origin + '/blogs/' + post.date + '.html';
+  const url = window.location.origin + '/blogs/' + post.slug + '.html';
   const text = post ? `${post.title} — emtypyie.in` : 'emtypyie.in';
   if (navigator.share) {
     navigator.share({ title: text, url }).catch(() => {});
@@ -1155,8 +1155,9 @@ async function loadBlogPreview() {
   list.innerHTML = top.map(post => {
     const tags = (post.tags || ['Notes']);
     const pillsHtml = tags.map(t => `<span class="blog-pill">${t}</span>`).join('');
+    const slug = post.slug || post.date;
     return `
-    <a class="blog-card" href="/blogs/${post.date}.html">
+    <a class="blog-card" href="/blogs/${slug}.html">
       <div class="blog-card-top">
         ${pillsHtml}
         <span class="blog-card-date">${fmtDate(post.date)}</span>
@@ -1166,9 +1167,9 @@ async function loadBlogPreview() {
       <div class="blog-card-footer">
         <div class="blog-card-footer-left">
           <span class="blog-card-readtime">${CLOCK_ICON} ${post.readTime || '1 min read'}</span>
-          <button class="like-btn${isLiked(post.date) ? ' liked' : ''}" data-date="${post.date}" title="Like">${HEART_ICON}</button>
+          <button class="like-btn${isLiked(slug) ? ' liked' : ''}" data-slug="${slug}" title="Like">${HEART_ICON}</button>
         </div>
-        <button class="blog-card-share" data-date="${post.date}" data-title="${post.title}" title="Share post">${SHARE_ICON}</button>
+        <button class="blog-card-share" data-slug="${slug}" data-title="${post.title}" title="Share post">${SHARE_ICON}</button>
       </div>
     </a>`;
   }).join('');
@@ -1176,13 +1177,13 @@ async function loadBlogPreview() {
   list.querySelectorAll('.like-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
-      toggleLike(btn.dataset.date, btn);
+      toggleLike(btn.dataset.slug, btn);
     });
   });
   list.querySelectorAll('.blog-card-share').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
-      sharePost({ date: btn.dataset.date, title: btn.dataset.title }, e);
+      sharePost({ slug: btn.dataset.slug, title: btn.dataset.title }, e);
       btn.classList.add('copied');
       setTimeout(() => btn.classList.remove('copied'), 1500);
     });
