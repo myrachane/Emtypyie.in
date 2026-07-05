@@ -405,36 +405,33 @@ nav {
 }
 .book-read-btn:hover { background: var(--orange); transform: translateY(-1px); }
 
-/* ── BLOG SECTION ── */
+/* ── BLOG SECTION (home preview) ── */
 .blog-section { border-bottom: 1px solid var(--rule); }
 .blog-inner { max-width: 1200px; margin: 0 auto; padding: 4rem 3rem 4.5rem; }
 
-/* ── SEARCH ── */
-.blog-search-row {
-  display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2rem;
+.blog-page-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
 }
-.blog-search-wrap {
-  flex: 1; position: relative;
+.blog-page-header h2 {
+  font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 400; color: var(--ink); margin-bottom: 0.4rem;
 }
-.blog-search-icon {
-  position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%);
-  color: var(--muted); pointer-events: none;
+.blog-page-header p { font-size: 0.82rem; color: var(--muted); font-weight: 300; }
+.blog-view-all {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--orange); text-decoration: none;
+  border: 1px solid var(--rule); border-radius: 6px; padding: 0.5rem 0.9rem;
+  white-space: nowrap; transition: border-color 0.15s, background 0.15s;
+  display: inline-flex; align-items: center; gap: 0.4rem;
 }
-.blog-search {
-  width: 100%; padding: 0.62rem 0.9rem 0.62rem 2.4rem;
-  background: var(--bg2); border: 1px solid var(--rule);
-  border-radius: 6px; font-family: var(--sans); font-size: 0.82rem;
-  color: var(--ink); outline: none;
-  transition: border-color 0.15s;
-}
-.blog-search::placeholder { color: var(--muted); }
-.blog-search:focus { border-color: var(--orange); }
+.blog-view-all:hover { border-color: var(--orange); background: var(--bg2); }
 
 .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
 .blog-card {
   background: var(--bg2); border: 1px solid var(--rule); border-radius: 8px;
   padding: 1.3rem 1.3rem 1.1rem; cursor: pointer;
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; text-decoration: none;
   transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 .blog-card:hover { border-color: var(--orange); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.1); }
@@ -458,8 +455,19 @@ nav {
   font-family: var(--mono); font-size: 0.64rem; color: var(--muted);
 }
 .blog-card-footer-left { display: flex; align-items: center; gap: 0.75rem; }
-.blog-card-readtime, .blog-card-likes { display: flex; align-items: center; gap: 0.3rem; }
-.blog-card-likes svg { color: #c23b5a; }
+.blog-card-readtime, .blog-card-like { display: flex; align-items: center; gap: 0.3rem; }
+
+/* ── LIKE BUTTON (no counts, localStorage-based) ── */
+.like-btn {
+  background: none; border: none; cursor: pointer; padding: 0.1rem 0.2rem;
+  color: var(--muted); display: flex; align-items: center; gap: 0.3rem;
+  font-family: var(--mono); font-size: 0.64rem;
+  border-radius: 4px; transition: color 0.15s, transform 0.1s;
+}
+.like-btn:hover { color: #c23b5a; }
+.like-btn.liked { color: #c23b5a; }
+.like-btn.liked svg { fill: #c23b5a; }
+.like-btn:active { transform: scale(0.9); }
 
 /* ── SHARE BUTTON ── */
 .blog-card-share {
@@ -478,43 +486,17 @@ nav {
 }
 .blog-empty span { display: block; margin-top: 0.45rem; font-size: 0.6rem; opacity: 0.6; }
 
-/* ── LOAD MORE ── */
-.load-more-wrap { text-align: center; margin-top: 2rem; }
-.load-more-btn {
-  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--ink2);
-  background: var(--bg2); border: 1px solid var(--rule);
-  border-radius: 6px; padding: 0.65rem 1.6rem;
-  cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s;
+/* ── SHARE TOAST ── */
+.share-toast {
+  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(8px);
+  background: var(--ink); color: var(--bg);
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em;
+  padding: 0.6rem 1.2rem; border-radius: 6px;
+  pointer-events: none; opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 200;
 }
-.load-more-btn:hover { border-color: var(--orange); color: var(--orange); background: var(--bg3); }
-.load-more-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-/* ── BLOG POST MODAL ── */
-#modal-post .modal { max-width: 720px; }
-.post-badges { display: flex; gap: 0.4rem; margin-bottom: 1rem; }
-.post-title { font-family: var(--serif); font-size: 2rem; font-weight: 400; line-height: 1.15; color: var(--ink); margin-bottom: 0.5rem; }
-.post-meta { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); margin-bottom: 1.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--rule); }
-.post-body { font-size: 0.88rem; color: var(--ink2); line-height: 1.8; font-weight: 300; }
-.post-body p { margin-bottom: 1rem; }
-.post-body h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; color: var(--ink); margin: 1.5rem 0 0.5rem; }
-.post-body code { font-family: var(--mono); font-size: 0.78rem; background: var(--bg2); padding: 0.1em 0.35em; border-radius: 2px; }
-.post-body pre { font-family: var(--mono); font-size: 0.75rem; background: var(--ink); color: var(--bg); padding: 1.2rem; border-radius: 4px; overflow-x: auto; margin: 1rem 0; line-height: 1.6; }
-.post-footer {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--rule);
-  font-family: var(--mono); font-size: 0.68rem; color: var(--muted);
-}
-.post-footer-left { display: flex; align-items: center; gap: 1rem; }
-.post-share-btn {
-  display: flex; align-items: center; gap: 0.35rem;
-  background: var(--bg2); border: 1px solid var(--rule);
-  border-radius: 6px; padding: 0.4rem 0.75rem;
-  font-family: var(--mono); font-size: 0.64rem; color: var(--ink2);
-  cursor: pointer; transition: border-color 0.15s, color 0.15s;
-}
-.post-share-btn:hover { border-color: var(--orange); color: var(--orange); }
-.post-share-btn.copied { border-color: var(--orange); color: var(--orange); }
+.share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ── FOOTER ── */
 footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: background 0.3s; }
@@ -607,18 +589,6 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
 .upi-app-btn:hover { opacity: 0.88; }
 .support-back { display: block; margin: 0 auto; background: none; border: none; font-family: var(--mono); font-size: 0.66rem; color: var(--muted); letter-spacing: 0.06em; cursor: pointer; padding: 0.35rem; }
 .support-back:hover { color: var(--ink2); }
-
-/* ── SHARE TOAST ── */
-.share-toast {
-  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(8px);
-  background: var(--ink); color: var(--bg);
-  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em;
-  padding: 0.6rem 1.2rem; border-radius: 6px;
-  pointer-events: none; opacity: 0;
-  transition: opacity 0.2s, transform 0.2s;
-  z-index: 200;
-}
-.share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
@@ -730,7 +700,7 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
         </a>
       </li>
       <li>
-        <a href="#blog" onclick="document.getElementById('blog').scrollIntoView({behavior:'smooth'}); return false;">
+        <a href="/blogs/index.html">
           <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2h10v10H2z"/><line x1="4" y1="5" x2="10" y2="5"/><line x1="4" y1="7.5" x2="8" y2="7.5"/></svg>
           blog
         </a>
@@ -774,7 +744,7 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
   <a href="https://wiki.emtypyie.in">Wiki</a>
   <a href="https://dosa.emtypyie.in">Dosa</a>
   <a href="https://emtypyie.in/portfolio">Portfolio</a>
-  <a href="#blog" onclick="document.getElementById('blog').scrollIntoView({behavior:'smooth'}); document.getElementById('nav-mobile-menu').classList.remove('open'); return false;">Blog</a>
+  <a href="/blogs/index.html">Blog</a>
   <a href="https://github.com/myrachane" target="_blank" rel="noopener">GitHub</a>
 </div>
 
@@ -900,27 +870,21 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
   </div>
 </section>
 
-<!-- BLOG SECTION -->
+<!-- BLOG SECTION (home preview — links out to full blog pages) -->
 <section class="blog-section" id="blog">
   <div class="blog-inner">
     <p class="section-label">writing &amp; notes</p>
 
-    <div class="blog-search-row">
-      <div class="blog-search-wrap">
-        <svg class="blog-search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="6" cy="6" r="4"/>
-          <line x1="9.5" y1="9.5" x2="13" y2="13"/>
-        </svg>
-        <input class="blog-search" id="blog-search" type="search" placeholder="Search posts…" autocomplete="off">
+    <div class="blog-page-header">
+      <div>
+        <h2>From the Blog</h2>
+        <p>Latest notes and updates</p>
       </div>
+      <a class="blog-view-all" href="/blogs/index.html">View all posts →</a>
     </div>
 
     <div class="blog-grid" id="blog-list">
-      <p class="blog-empty">loading posts<span>fetching /blog/*.json</span></p>
-    </div>
-
-    <div class="load-more-wrap" id="load-more-wrap" style="display:none;">
-      <button class="load-more-btn" id="load-more-btn" type="button">Load more posts</button>
+      <p class="blog-empty">loading posts<span>fetching /blogs/index.json</span></p>
     </div>
   </div>
 </section>
@@ -970,14 +934,6 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
     <p>Any references to political figures, historical events, governments, organisations, or public personalities are intended as memes and satire only. No endorsement, political alignment, or serious commentary is implied or should be inferred.</p>
     <p>Projects described here may be incomplete, broken, or abandoned. That's kind of the whole thing.</p>
     <p>If you have a concern, open a GitHub issue or send a message. I'm reasonable.</p>
-  </div>
-</div>
-
-<!-- MODAL: BLOG POST -->
-<div class="modal-overlay" id="modal-post" onclick="if(event.target===this)closeModal()">
-  <div class="modal" style="max-width:720px;">
-    <button class="modal-close" onclick="closeModal()">close ×</button>
-    <div id="post-content"></div>
   </div>
 </div>
 
@@ -1070,7 +1026,7 @@ function showToast(msg) {
 
 function sharePost(post, e) {
   if (e) e.stopPropagation();
-  const url = window.location.href.split('#')[0] + '#blog';
+  const url = window.location.origin + '/blogs/' + post.date + '.html';
   const text = post ? `${post.title} — emtypyie.in` : 'emtypyie.in';
   if (navigator.share) {
     navigator.share({ title: text, url }).catch(() => {});
@@ -1079,6 +1035,16 @@ function sharePost(post, e) {
       prompt('Copy this link:', url);
     });
   }
+}
+
+/* ── LIKE HELPER (localStorage, no counts shown) ── */
+function isLiked(date) {
+  return localStorage.getItem('emty-like-' + date) === '1';
+}
+function toggleLike(date, btn) {
+  const liked = !isLiked(date);
+  localStorage.setItem('emty-like-' + date, liked ? '1' : '0');
+  btn.classList.toggle('liked', liked);
 }
 
 /* ── BANNER CAROUSEL ── */
@@ -1157,202 +1123,72 @@ async function loadBanners() {
 }
 loadBanners();
 
-/* ── BLOG ── */
-let allPosts = [];
-let filteredPosts = [];
-let visibleCount = 6;
-const PAGE_SIZE = 6;
-
+/* ── BLOG PREVIEW (home page — top 3 posts, links to real pages) ── */
 function fmtDate(str) {
   const [d, m, y] = str.split('-');
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   return `${parseInt(d)} ${months[parseInt(m) - 1]} ${y}`;
 }
-
 function parseDateVal(str) {
   const [d, m, y] = str.split('-').map(Number);
   return new Date(y, m - 1, d).getTime();
 }
 
-function estimateReadTime(body) {
-  const words = (body || []).map(b => (b.content || '').replace(/<[^>]+>/g, '')).join(' ').split(/\s+/).filter(Boolean).length;
-  return `${Math.max(1, Math.round(words / 200))} min read`;
-}
-
-function deriveExcerpt(post) {
-  if (post.excerpt) return post.excerpt;
-  const firstP = (post.body || []).find(b => b.type === 'p');
-  if (!firstP) return '';
-  const text = firstP.content.replace(/<[^>]+>/g, '');
-  return text.length > 140 ? text.slice(0, 140).trim() + '…' : text;
-}
-
-function renderPostModal(post) {
-  const bodyHtml = (post.body || []).map(block => {
-    if (block.type === 'p') return `<p>${block.content}</p>`;
-    if (block.type === 'h3') return `<h3>${block.content}</h3>`;
-    if (block.type === 'code') return `<pre>${block.content}</pre>`;
-    if (block.type === 'inline-code') return `<p><code>${block.content}</code></p>`;
-    return '';
-  }).join('');
-
-  const category = post.category || 'Notes';
-  const readTime = post.readTime || estimateReadTime(post.body);
-  const likes = typeof post.likes === 'number' ? post.likes : 0;
-
-  document.getElementById('post-content').innerHTML = `
-    <div class="post-badges">
-      <span class="blog-pill">${category}</span>
-      ${post.pinned ? '<span class="blog-pill pinned">+ Pinned</span>' : ''}
-    </div>
-    <h2 class="post-title">${post.title}</h2>
-    <p class="post-meta">${fmtDate(post.date)}${post.subtitle ? ' · ' + post.subtitle : ''}</p>
-    <div class="post-body">${bodyHtml}</div>
-    <div class="post-footer">
-      <div class="post-footer-left">
-        <span class="blog-card-readtime">${CLOCK_ICON} ${readTime}</span>
-        <span class="blog-card-likes">${HEART_ICON} ${likes}</span>
-      </div>
-      <button class="post-share-btn" id="post-share-btn">${SHARE_ICON} Share</button>
-    </div>
-  `;
-  document.getElementById('post-share-btn').addEventListener('click', () => sharePost(post));
-  openModal('post');
-}
-
-function renderBlogCards() {
+async function loadBlogPreview() {
   const list = document.getElementById('blog-list');
-  const loadMoreWrap = document.getElementById('load-more-wrap');
-  const loadMoreBtn = document.getElementById('load-more-btn');
-
-  const postsToShow = filteredPosts.slice(0, visibleCount);
-
-  if (!postsToShow.length) {
-    list.innerHTML = `<p class="blog-empty">No posts found<span>Try a different search term</span></p>`;
-    loadMoreWrap.style.display = 'none';
+  let posts;
+  try {
+    const r = await fetch('/blogs/index.json');
+    if (!r.ok) throw new Error();
+    posts = await r.json();
+  } catch {
+    list.innerHTML = `<p class="blog-empty">No posts yet<span>Check back soon</span></p>`;
     return;
   }
+  if (!posts || !posts.length) {
+    list.innerHTML = `<p class="blog-empty">No posts yet<span>Check back soon</span></p>`;
+    return;
+  }
+  posts.sort((a, b) => parseDateVal(b.date) - parseDateVal(a.date));
+  const top = posts.slice(0, 3);
 
-  list.innerHTML = postsToShow.map((post, i) => {
-    const category = post.category || 'Notes';
-    const readTime = post.readTime || estimateReadTime(post.body);
-    const likes = typeof post.likes === 'number' ? post.likes : 0;
-    const excerpt = deriveExcerpt(post);
+  list.innerHTML = top.map(post => {
+    const tags = (post.tags || ['Notes']);
+    const pillsHtml = tags.map(t => `<span class="blog-pill">${t}</span>`).join('');
     return `
-    <article class="blog-card" data-index="${post._origIndex}">
+    <a class="blog-card" href="/blogs/${post.date}.html">
       <div class="blog-card-top">
-        <span class="blog-pill">${category}</span>
-        ${post.pinned ? '<span class="blog-pill pinned">+ Pinned</span>' : ''}
+        ${pillsHtml}
         <span class="blog-card-date">${fmtDate(post.date)}</span>
       </div>
       <h3 class="blog-card-title">${post.title}</h3>
-      <p class="blog-card-excerpt">${excerpt}</p>
+      <p class="blog-card-excerpt">${post.excerpt || ''}</p>
       <div class="blog-card-footer">
         <div class="blog-card-footer-left">
-          <span class="blog-card-readtime">${CLOCK_ICON} ${readTime}</span>
-          <span class="blog-card-likes">${HEART_ICON} ${likes}</span>
+          <span class="blog-card-readtime">${CLOCK_ICON} ${post.readTime || '1 min read'}</span>
+          <button class="like-btn${isLiked(post.date) ? ' liked' : ''}" data-date="${post.date}" title="Like">${HEART_ICON}</button>
         </div>
-        <button class="blog-card-share" data-post-index="${post._origIndex}" title="Share post">${SHARE_ICON}</button>
+        <button class="blog-card-share" data-date="${post.date}" data-title="${post.title}" title="Share post">${SHARE_ICON}</button>
       </div>
-    </article>`;
+    </a>`;
   }).join('');
 
-  list.querySelectorAll('.blog-card').forEach(item => {
-    item.addEventListener('click', (e) => {
-      if (e.target.closest('.blog-card-share')) return;
-      const idx = parseInt(item.getAttribute('data-index'), 10);
-      renderPostModal(allPosts[idx]);
+  list.querySelectorAll('.like-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      toggleLike(btn.dataset.date, btn);
     });
   });
-
   list.querySelectorAll('.blog-card-share').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const idx = parseInt(btn.getAttribute('data-post-index'), 10);
-      sharePost(allPosts[idx], e);
+      e.preventDefault(); e.stopPropagation();
+      sharePost({ date: btn.dataset.date, title: btn.dataset.title }, e);
       btn.classList.add('copied');
       setTimeout(() => btn.classList.remove('copied'), 1500);
     });
   });
-
-  if (visibleCount < filteredPosts.length) {
-    loadMoreWrap.style.display = 'block';
-    loadMoreBtn.disabled = false;
-    loadMoreBtn.textContent = `Load more posts (${filteredPosts.length - visibleCount} remaining)`;
-  } else {
-    loadMoreWrap.style.display = 'none';
-  }
 }
-
-function applyFilter() {
-  const q = document.getElementById('blog-search').value.trim().toLowerCase();
-  filteredPosts = q
-    ? allPosts.filter(p => {
-        const title = p.title?.toLowerCase() || '';
-        const excerpt = deriveExcerpt(p).toLowerCase();
-        const cat = (p.category || '').toLowerCase();
-        return title.includes(q) || excerpt.includes(q) || cat.includes(q);
-      })
-    : [...allPosts];
-  visibleCount = PAGE_SIZE;
-  renderBlogCards();
-}
-
-document.getElementById('blog-search').addEventListener('input', applyFilter);
-
-document.getElementById('load-more-btn').addEventListener('click', () => {
-  visibleCount += PAGE_SIZE;
-  renderBlogCards();
-  const list = document.getElementById('blog-list');
-  const cards = list.querySelectorAll('.blog-card');
-  if (cards.length > 0) {
-    const target = cards[visibleCount - PAGE_SIZE];
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-});
-
-async function loadBlog() {
-  const list = document.getElementById('blog-list');
-
-  let index;
-  try {
-    const r = await fetch('/blog/index.json');
-    if (!r.ok) throw new Error();
-    index = await r.json();
-  } catch {
-    list.innerHTML = `<p class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></p>`;
-    return;
-  }
-
-  if (!index.length) {
-    list.innerHTML = `<p class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></p>`;
-    return;
-  }
-
-  const posts = await Promise.all(index.map(async (date, i) => {
-    try {
-      const r = await fetch(`/blog/${date}.json`);
-      if (!r.ok) return null;
-      const p = await r.json();
-      p._origIndex = i;
-      return p;
-    } catch { return null; }
-  }));
-
-  const valid = posts.filter(Boolean);
-  if (!valid.length) {
-    list.innerHTML = `<p class="blog-empty">No posts yet<span>Drop a JSON file in /blog/ to publish</span></p>`;
-    return;
-  }
-
-  valid.sort((a, b) => parseDateVal(b.date) - parseDateVal(a.date));
-  valid.forEach((p, i) => p._origIndex = i);
-  allPosts = valid;
-  filteredPosts = [...allPosts];
-  renderBlogCards();
-}
-
-loadBlog();
+loadBlogPreview();
 
 /* ── SUPPORT ── */
 const UPI_ID = 'workforemty@oksbi';
