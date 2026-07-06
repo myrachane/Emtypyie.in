@@ -815,7 +815,7 @@ async function loadBlog() {
   const list = document.getElementById('blog-list');
   let posts;
   try {
-    const r = await fetch('index.json');
+    const r = await fetch('/blogs/index.json');
     if (!r.ok) throw new Error();
     posts = await r.json();
   } catch {
