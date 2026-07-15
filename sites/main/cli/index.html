@@ -795,7 +795,7 @@ function showToast(msg) {
 
 /* ── VERSION FETCH (from npm registry) ── */
 const versionEl = document.getElementById('cli-version');
-fetch('https://registry.npmjs.org/emtypyie-cli/latest')
+fetch('https://registry.npmjs.org/emtypyie/latest')
   .then(r => { if (!r.ok) throw new Error(); return r.json(); })
   .then(data => {
     versionEl.textContent = 'v' + data.version;
