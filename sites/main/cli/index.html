@@ -530,10 +530,6 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
 .support-continue:disabled { opacity: 0.3; cursor: not-allowed; }
 .support-continue:not(:disabled):hover { background: var(--accent2); }
 .qr-wrap { display: flex; justify-content: center; align-items: center; padding: 1rem; background: var(--bg3); border: 1px solid var(--rule); margin-bottom: 1.1rem; min-height: 190px; }
-.qr-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.7rem; width: 190px; height: 190px; }
-.qr-spinner { width: 24px; height: 24px; border-radius: 50%; border: 2.5px solid var(--rule); border-top-color: var(--accent); animation: qr-spin 0.8s linear infinite; }
-.qr-loading-text { font-family: var(--mono); font-size: 0.64rem; color: var(--muted); letter-spacing: 0.05em; }
-@keyframes qr-spin { to { transform: rotate(360deg); } }
 .upi-id-line-wrap { text-align: center; margin-bottom: 0.9rem; }
 .upi-id-line { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.03em; cursor: pointer; padding: 0.25rem; border-bottom: 1px dashed var(--rule); display: inline-block; transition: color 0.15s, border-color 0.15s; }
 .upi-id-line:hover { color: var(--ink2); border-color: var(--accent); }
@@ -941,7 +937,7 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
         <span class="upi-id-line" id="upi-id-line" title="Click to copy">workforemty@oksbi</span>
       </div>
       <div class="qr-wrap">
-        <canvas id="upi-qr-canvas"></canvas>
+        <img id="upi-qr-img" alt="QR" style="width:190px;height:190px;">
       </div>
       <a class="upi-app-btn" id="upi-app-link" href="#">Open in UPI app →</a>
       <button class="support-back" id="support-back-btn" type="button">← change amount</button>
@@ -1052,6 +1048,7 @@ let supportAmount = null;
 function openSupportModal() {
   document.getElementById('support-view-amount').style.display = 'block';
   document.getElementById('support-view-qr').style.display = 'none';
+  document.getElementById('upi-qr-img').src = '';
   document.querySelectorAll('.amount-option').forEach(b => b.classList.remove('active'));
   document.getElementById('custom-amount-input').value = '';
   supportAmount = null;
@@ -1082,29 +1079,21 @@ document.getElementById('custom-amount-input').addEventListener('input', functio
   updateContinueState();
 });
 
-document.getElementById('support-continue-btn').addEventListener('click', async () => {
+document.getElementById('support-continue-btn').addEventListener('click', () => {
   if (!supportAmount || supportAmount <= 0) return;
   document.getElementById('support-view-amount').style.display = 'none';
   document.getElementById('support-view-qr').style.display = 'block';
-  const qrCanvas = document.getElementById('upi-qr-canvas');
+  const qrImg = document.getElementById('upi-qr-img');
   const qrHeading = document.getElementById('support-qr-heading');
   qrHeading.textContent = `Pay \u20B9${supportAmount}`;
 
-  const upiLink = `upi://pay?pa=${UPI_ID}&pn=${UPI_NAME}&am=${supportAmount}&cu=INR`;
-  document.getElementById('upi-app-link').href = upiLink;
+  const theme = html.getAttribute('data-theme');
+  const fgColor = theme === 'amber' ? 'ffdba3' : 'c9f7cf';
+  const bgColor = theme === 'amber' ? '18110a' : '101a12';
+  const upiLink = `upi://pay?pa=${UPI_ID}&pn=${UPI_NAME}&am=${supportAmount}&cu=INR&tn=Support%20for%20Emty`;
 
-  try {
-    if (typeof QRCode !== 'undefined') {
-      QRCode.toCanvas(qrCanvas, upiLink, { width: 190, margin: 1, color: { dark: '#c9f7cf', light: '#101a12' } }, err => {
-        if (err) { qrCanvas.insertAdjacentHTML('afterend', '<p style="font-family:var(--mono);font-size:0.6rem;color:var(--muted)">Failed to generate QR</p>'); }
-      });
-    } else {
-      const QRCode = await import('https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js').then(m => m.default);
-      QRCode.toCanvas(qrCanvas, upiLink, { width: 190, margin: 1, color: { dark: '#c9f7cf', light: '#101a12' } });
-    }
-  } catch {
-    qrCanvas.insertAdjacentHTML('afterend', '<p style="font-family:var(--mono);font-size:0.6rem;color:var(--muted)">Failed to generate QR</p>');
-  }
+  document.getElementById('upi-app-link').href = upiLink;
+  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=${encodeURIComponent(upiLink)}&color=${fgColor}&bgcolor=${bgColor}&qzone=1`;
 });
 
 document.getElementById('upi-id-line').addEventListener('click', function() {
