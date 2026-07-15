@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>emtypyie CLI — emtypyie.in</title>
+<title>Emtypyie CLI </title>
 <link rel="icon" type="image/jpeg" href="https://cdn.emtypyie.in/assets/favicon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,8 +22,6 @@
   --orange: #c85a1e;
   --orange-deep: #8c3f15;
   --blue:   #1d4e89;
-  --green:  #4c8c5c;
-  --red:    #b8523f;
   --serif:  'DM Serif Display', Georgia, serif;
   --mono:   'IBM Plex Mono', monospace;
   --sans:   'Inter', sans-serif;
@@ -43,8 +41,6 @@
   --rule:   #2e2a24;
   --orange: #e06820;
   --orange-deep: #a04c18;
-  --green:  #6fae7d;
-  --red:    #d17563;
   --bg: #131210;
   --bg2: #1a1714;
   --bg3: #1e1b17;
@@ -59,25 +55,11 @@ html, body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-html { scrollbar-width: thin; scrollbar-color: var(--rule) var(--bg2); scroll-behavior: smooth; }
+html { scrollbar-width: thin; scrollbar-color: var(--rule) var(--bg2); }
 *::-webkit-scrollbar { width: 8px; }
 *::-webkit-scrollbar-track { background: var(--bg2); }
 *::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 6px; }
 *::-webkit-scrollbar-thumb:hover { background: var(--orange); }
-
-a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
-  outline: 2px solid var(--orange); outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
-}
-
-code.inline {
-  font-family: var(--mono); font-size: 0.85em; background: var(--bg2);
-  padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--orange-deep);
-}
-[data-theme="dark"] code.inline { color: var(--orange); }
 
 nav {
   position: sticky; top: 0; z-index: 50;
@@ -144,32 +126,10 @@ nav {
 .support-fab:hover { transform: translateY(-1px); box-shadow: 0 5px 0 var(--orange-deep), 0 9px 16px rgba(0,0,0,0.25); }
 .support-fab:active { transform: translateY(4px); box-shadow: 0 0 0 var(--orange-deep); }
 
-/* ── DOCS SUBNAV ── */
-.docs-subnav {
-  position: sticky; top: 52px; z-index: 40;
-  background: var(--bg);
-  border-bottom: 1px solid var(--rule);
-  transition: background 0.3s ease, border-color 0.3s ease;
-}
-.docs-subnav-inner {
-  max-width: 1200px; margin: 0 auto; padding: 0 3rem;
-  display: flex; gap: 1.7rem; overflow-x: auto;
-}
-.docs-subnav-inner::-webkit-scrollbar { height: 0; }
-.docs-subnav a {
-  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em;
-  text-transform: uppercase; color: var(--muted); text-decoration: none;
-  padding: 0.7rem 0.05rem 0.6rem; white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
-}
-.docs-subnav a:hover { color: var(--ink2); }
-.docs-subnav a.active { color: var(--orange); border-color: var(--orange); }
-
 /* ── CLI PAGE HERO ── */
 .cli-hero {
   max-width: 1200px; margin: 0 auto;
-  padding: 6vh 3rem 5vh;
+  padding: 7vh 3rem 6vh;
   border-bottom: 1px solid var(--rule);
 }
 .cli-hero-inner {
@@ -234,27 +194,13 @@ nav {
   align-items: center;
   gap: 0.35rem;
 }
-.cli-hero-cta {
-  display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center;
-  margin-top: 0.6rem;
-}
-.cli-hero-cta a {
-  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.05em;
-  text-decoration: none; padding: 0.55rem 1rem; border-radius: 6px;
-  border: 1px solid var(--rule); color: var(--ink2);
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
-}
-.cli-hero-cta a.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.cli-hero-cta a.primary:hover { background: var(--orange); border-color: var(--orange); }
-.cli-hero-cta a:not(.primary):hover { border-color: var(--orange); color: var(--orange); }
 
 /* ── SECTION COMMON ── */
-.section { border-bottom: 1px solid var(--rule); scroll-margin-top: 100px; }
+.section { border-bottom: 1px solid var(--rule); }
 .section-inner {
   max-width: 1200px; margin: 0 auto;
   padding: 4rem 3rem 4.5rem;
 }
-.section-inner.narrow { max-width: 860px; }
 .section-label {
   font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em;
   text-transform: uppercase; color: var(--muted); margin-bottom: 2rem;
@@ -337,66 +283,10 @@ nav {
   background: var(--bg2);
 }
 
-/* ── QUICK START STEPS ── */
-.steps-list { margin-top: 2.2rem; border-top: 1px solid var(--rule); }
-.step-item {
-  display: grid; grid-template-columns: 2.4rem 1fr;
-  gap: 1.3rem; padding: 1.5rem 0; border-bottom: 1px solid var(--rule);
-}
-.step-num {
-  font-family: var(--mono); font-size: 0.95rem; color: var(--orange);
-  padding-top: 0.1rem;
-}
-.step-body h3 {
-  font-family: var(--sans); font-weight: 500; font-size: 0.9rem;
-  color: var(--ink); margin-bottom: 0.35rem;
-}
-.step-body p {
-  font-size: 0.8rem; color: var(--ink2); font-weight: 300;
-  line-height: 1.7; margin-bottom: 0.7rem; max-width: 560px;
-}
-.step-code {
-  background: var(--bg3); border: 1px solid var(--rule); border-radius: 6px;
-  padding: 0.7rem 1rem; font-family: var(--mono); font-size: 0.76rem;
-  color: var(--ink); overflow-x: auto; max-width: 560px;
-}
-.step-code .out { color: var(--muted); display: block; }
-
-/* ── TERMINAL DEMO ── */
-.terminal-window {
-  background: var(--bg3); border: 1px solid var(--rule); border-radius: 10px;
-  overflow: hidden; margin-top: 2rem;
-  box-shadow: 0 16px 36px rgba(0,0,0,0.10);
-}
-.terminal-titlebar {
-  display: flex; align-items: center; gap: 0.4rem;
-  padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--rule); background: var(--bg2);
-}
-.terminal-dot { width: 9px; height: 9px; border-radius: 50%; }
-.terminal-dot.red { background: var(--red); }
-.terminal-dot.yellow { background: #d9a441; }
-.terminal-dot.green { background: var(--green); }
-.terminal-titlebar .terminal-title {
-  margin-left: 0.5rem; font-family: var(--mono); font-size: 0.64rem; color: var(--muted);
-}
-.terminal-body {
-  padding: 1.3rem 1.5rem; font-family: var(--mono); font-size: 0.78rem;
-  line-height: 1.85; color: var(--ink2); min-height: 230px;
-}
-.terminal-line .prompt { color: var(--orange); }
-.terminal-line .cmd { color: var(--ink); }
-.terminal-out { color: var(--muted); display: block; }
-.terminal-out.accent { color: var(--orange); }
-.terminal-cursor {
-  display: inline-block; width: 6px; height: 1em; background: var(--orange);
-  vertical-align: middle; margin-left: 2px; animation: term-blink 1s step-start infinite;
-}
-@keyframes term-blink { 50% { opacity: 0; } }
-
 /* ── COMMANDS TABLE ── */
 .commands-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 0.75rem;
   margin-top: 2rem;
 }
@@ -404,7 +294,7 @@ nav {
   background: var(--bg2);
   border: 1px solid var(--rule);
   border-radius: 8px;
-  padding: 1.1rem 1.2rem 1.05rem;
+  padding: 1.1rem 1.2rem 1rem;
   transition: border-color 0.18s, transform 0.15s, box-shadow 0.18s;
 }
 .cmd-card:hover {
@@ -426,36 +316,6 @@ nav {
   color: var(--ink2);
   line-height: 1.55;
 }
-.cmd-usage {
-  margin-top: 0.65rem; padding-top: 0.6rem; border-top: 1px dashed var(--rule);
-  font-family: var(--mono); font-size: 0.65rem; color: var(--muted); line-height: 1.9;
-}
-.cmd-usage b { color: var(--ink2); font-weight: 500; letter-spacing: 0.04em; }
-.cmd-usage .ex { color: var(--orange-deep); }
-[data-theme="dark"] .cmd-usage .ex { color: var(--orange); }
-
-/* ── CONFIGURATION ── */
-.config-block {
-  background: var(--bg3); border: 1px solid var(--rule); border-radius: 8px;
-  padding: 1.2rem 1.4rem; margin-top: 1.6rem;
-  font-family: var(--mono); font-size: 0.76rem; line-height: 1.75;
-  color: var(--ink2); overflow-x: auto; max-width: 620px;
-}
-.config-block .k { color: var(--orange-deep); }
-[data-theme="dark"] .config-block .k { color: var(--orange); }
-.config-block .s { color: var(--green); }
-.config-block .n { color: var(--blue); }
-[data-theme="dark"] .config-block .n { color: #6b9bd1; }
-
-.config-table-wrap { margin-top: 2.4rem; overflow-x: auto; }
-.config-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.72rem; min-width: 520px; }
-.config-table th {
-  text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--rule);
-  color: var(--muted); font-weight: 500; text-transform: uppercase; font-size: 0.6rem; letter-spacing: 0.07em;
-}
-.config-table td { text-align: left; padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink2); vertical-align: top; }
-.config-table td.key { color: var(--orange); white-space: nowrap; }
-.config-table td.default { color: var(--muted); white-space: nowrap; }
 
 /* ── THEMES PREVIEW ── */
 .themes-list {
@@ -487,30 +347,6 @@ nav {
   font-size: 0.64rem;
   color: var(--ink2);
   letter-spacing: 0.03em;
-}
-.themes-note {
-  margin-top: 1.6rem; font-size: 0.78rem; color: var(--ink2); font-weight: 300;
-  line-height: 1.75; max-width: 620px;
-}
-
-/* ── FAQ ── */
-.faq-list { margin-top: 1rem; border-top: 1px solid var(--rule); }
-.faq-item { border-bottom: 1px solid var(--rule); }
-.faq-item summary {
-  padding: 1.1rem 0; font-family: var(--sans); font-size: 0.87rem; font-weight: 500;
-  color: var(--ink); cursor: pointer; list-style: none;
-  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
-}
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary .icon {
-  font-family: var(--mono); color: var(--orange); font-size: 1.1rem; flex-shrink: 0;
-  width: 1rem; text-align: center;
-}
-.faq-item[open] summary .icon { transform: rotate(45deg); }
-.faq-item summary .icon { display: inline-block; transition: transform 0.15s; }
-.faq-item p {
-  padding: 0 0 1.15rem; font-size: 0.8rem; color: var(--ink2);
-  font-weight: 300; line-height: 1.75; max-width: 640px;
 }
 
 /* ── FOOTER ── */
@@ -609,25 +445,21 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
   nav { padding: 0 1.2rem; }
   .nav-links { display: none; }
   .support-fab { top: 62px; right: 12px; padding: 0.48rem 0.8rem; font-size: 0.62rem; }
-  .docs-subnav-inner { padding: 0 1.4rem; gap: 1.2rem; }
-  .cli-hero { padding: 5vh 1.4rem 3.5vh; }
+  .cli-hero { padding: 6vh 1.4rem 4vh; }
   .cli-hero h1 { font-size: clamp(1.6rem, 7vw, 2.2rem); }
   .section-inner { padding: 3rem 1.4rem 3.5rem; }
   .commands-grid { grid-template-columns: 1fr; }
-  .step-item { grid-template-columns: 1.6rem 1fr; gap: 0.9rem; }
   .footer-inner { grid-template-columns: 1fr; padding: 2rem 1.4rem; }
   .footer-links { align-items: flex-start; }
   .footer-bottom { padding: 1.2rem 1.4rem 1.8rem; flex-direction: column; gap: 1rem; }
   .footer-bottom-logo { height: 80px; }
   .amount-grid { grid-template-columns: repeat(2, 1fr); }
   .modal { padding: 1.5rem; }
-  .config-table { min-width: 460px; }
 }
 
 @media (max-width: 960px) and (min-width: 769px) {
   nav { padding: 0 1.8rem; }
-  .cli-hero { padding: 6vh 2rem 4vh; }
-  .docs-subnav-inner { padding: 0 2rem; }
+  .cli-hero { padding: 7vh 2rem 5vh; }
   .section-inner { padding: 3.5rem 2rem; }
   .commands-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-inner, .footer-bottom { padding-left: 2rem; padding-right: 2rem; }
@@ -719,28 +551,11 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
     <div class="cli-hero-meta">
       <span id="cli-build">Build: detecting...</span>
     </div>
-    <div class="cli-hero-cta">
-      <a href="#install" class="primary">Install the CLI</a>
-      <a href="#commands">Browse commands</a>
-      <a href="https://github.com/myrachane/emtypyie-cli" target="_blank" rel="noopener">Source on GitHub</a>
-    </div>
   </div>
 </section>
 
-<div class="docs-subnav" id="docs-subnav">
-  <div class="docs-subnav-inner">
-    <a href="#install" data-section="install">Install</a>
-    <a href="#quickstart" data-section="quickstart">Quick start</a>
-    <a href="#demo" data-section="demo">Demo</a>
-    <a href="#commands" data-section="commands">Commands</a>
-    <a href="#config" data-section="config">Configuration</a>
-    <a href="#themes" data-section="themes">Themes</a>
-    <a href="#faq" data-section="faq">FAQ</a>
-  </div>
-</div>
-
 <!-- INSTALL -->
-<section class="section" id="install">
+<section class="section">
   <div class="section-inner">
     <p class="section-label">installation</p>
     <div class="section-header">
@@ -748,210 +563,77 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
       <p>Install globally via npm &mdash; requires Node.js 18+</p>
     </div>
     <div class="install-cmd">
-      <code>npm install -g emtypyie</code>
+      <code>npm install -g emtypyie-cli</code>
       <button class="install-copy" id="install-copy-btn" type="button">Copy</button>
     </div>
-    <p class="install-deps-note">After installation, run <code class="inline">emtypyie</code> in your terminal to start.</p>
+    <p class="install-deps-note">After installation, run <code style="font-family:var(--mono);font-size:0.72rem;background:var(--bg2);padding:0.08rem 0.3rem;border-radius:3px;">emtypyie</code> in your terminal to start.</p>
     <p class="install-gh-link"><a href="https://github.com/myrachane/emtypyie-cli" target="_blank" rel="noopener">Report issues on GitHub &rarr;</a></p>
   </div>
 </section>
 
-<!-- QUICK START -->
-<section class="section" id="quickstart">
-  <div class="section-inner">
-    <p class="section-label">quick start</p>
-    <div class="section-header">
-      <h2>From zero to running</h2>
-      <p>Four steps, in order &mdash; this is the path every new install follows</p>
-    </div>
-    <div class="steps-list">
-      <div class="step-item">
-        <div class="step-num">01</div>
-        <div class="step-body">
-          <h3>Install the package</h3>
-          <p>Requires Node.js 18 or newer. This puts the <code class="inline">emtypyie</code> binary on your <code class="inline">PATH</code>.</p>
-          <div class="step-code">npm install -g emtypyie</div>
-        </div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">02</div>
-        <div class="step-body">
-          <h3>Launch the shell</h3>
-          <p>This drops you into the emtypyie prompt, where every command below is typed with a leading <code class="inline">/</code>.</p>
-          <div class="step-code">emtypyie
-<span class="out">emtypyie v2.4.1 — type /help to see what's here</span></div>
-        </div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">03</div>
-        <div class="step-body">
-          <h3>Grab a project</h3>
-          <p>Pulls a project from the registry and installs it locally. Pin a version with <code class="inline">@version</code> if you need to.</p>
-          <div class="step-code">/get dosa
-<span class="out">installed dosa@1.9.0 → ~/.emtypyie/projects/dosa</span></div>
-        </div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">04</div>
-        <div class="step-body">
-          <h3>Run it</h3>
-          <p>Any installed project runs by name. Pass its own flags straight through after the name.</p>
-          <div class="step-code">/dosa
-<span class="out">→ dosa running on localhost:4200</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TERMINAL DEMO -->
-<section class="section" id="demo">
-  <div class="section-inner">
-    <p class="section-label">see it in action</p>
-    <div class="section-header">
-      <h2>A typical session</h2>
-      <p>What it looks like once you're in</p>
-    </div>
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="terminal-dot red"></span>
-        <span class="terminal-dot yellow"></span>
-        <span class="terminal-dot green"></span>
-        <span class="terminal-title">emtypyie — zsh</span>
-      </div>
-      <div class="terminal-body" id="terminal-body"></div>
-    </div>
-  </div>
-</section>
-
 <!-- COMMANDS -->
-<section class="section" id="commands">
+<section class="section">
   <div class="section-inner">
     <p class="section-label">commands</p>
     <div class="section-header">
-      <h2>Command Reference</h2>
-      <p>All commands use the <code class="inline">/</code> prefix. Arguments in <code class="inline">&lt;angle brackets&gt;</code> are required, <code class="inline">[square brackets]</code> are optional.</p>
+      <h2>Available Commands</h2>
+      <p>All commands use the <code style="font-family:var(--mono);background:var(--bg2);padding:0.08rem 0.3rem;border-radius:3px;">/</code> prefix</p>
     </div>
     <div class="commands-grid">
       <div class="cmd-card">
         <div class="cmd-name">/help</div>
-        <div class="cmd-desc">List all available commands, or get details on one.</div>
-        <div class="cmd-usage"><b>usage</b> /help [command]<br><span class="ex">example</span> /help wrap</div>
+        <div class="cmd-desc">List all available commands</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/get &lt;project&gt;</div>
-        <div class="cmd-desc">Download and install a project from the registry.</div>
-        <div class="cmd-usage"><b>usage</b> /get &lt;project&gt;[@version]<br><span class="ex">example</span> /get dosa@1.8.0</div>
+        <div class="cmd-desc">Download and install a project</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/bakafetch</div>
-        <div class="cmd-desc">Display system info with ASCII art, like neofetch.</div>
-        <div class="cmd-usage"><b>usage</b> /bakafetch<br><span class="ex">example</span> /bakafetch</div>
+        <div class="cmd-desc">Display system info with ASCII art</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/wrap all &lt;theme&gt;</div>
-        <div class="cmd-desc">Change the CLI's color scheme to a built-in theme.</div>
-        <div class="cmd-usage"><b>usage</b> /wrap all &lt;slate|green|amber|violet|cyan&gt;<br><span class="ex">example</span> /wrap all violet</div>
+        <div class="cmd-desc">Change the CLI color scheme</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/wrap bakafetch &lt;color&gt;</div>
-        <div class="cmd-desc">Change just the bakafetch accent color.</div>
-        <div class="cmd-usage"><b>usage</b> /wrap bakafetch &lt;hex|name&gt;<br><span class="ex">example</span> /wrap bakafetch #22c55e</div>
+        <div class="cmd-desc">Change bakafetch accent color</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/clear</div>
-        <div class="cmd-desc">Clear the terminal screen.</div>
-        <div class="cmd-usage"><b>usage</b> /clear<br><span class="ex">example</span> /clear</div>
+        <div class="cmd-desc">Clear the terminal screen</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/list</div>
-        <div class="cmd-desc">List installed projects with their versions.</div>
-        <div class="cmd-usage"><b>usage</b> /list<br><span class="ex">example</span> /list</div>
+        <div class="cmd-desc">List installed projects with versions</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/update</div>
-        <div class="cmd-desc">Update emtypyie itself to the latest version.</div>
-        <div class="cmd-usage"><b>usage</b> /update<br><span class="ex">example</span> /update</div>
+        <div class="cmd-desc">Update emtypyie to the latest version</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/docs &lt;project&gt;</div>
-        <div class="cmd-desc">Open a project's documentation on GitHub.</div>
-        <div class="cmd-usage"><b>usage</b> /docs &lt;project&gt;<br><span class="ex">example</span> /docs wiki</div>
+        <div class="cmd-desc">Open project documentation on GitHub</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/changelog</div>
-        <div class="cmd-desc">View emtypyie's release history on GitHub.</div>
-        <div class="cmd-usage"><b>usage</b> /changelog<br><span class="ex">example</span> /changelog</div>
+        <div class="cmd-desc">View release history on GitHub</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/&lt;project&gt;</div>
-        <div class="cmd-desc">Run an installed project by name, passing through any flags it accepts.</div>
-        <div class="cmd-usage"><b>usage</b> /&lt;project&gt; [args]<br><span class="ex">example</span> /dosa --port 4200</div>
+        <div class="cmd-desc">Run an installed project by name</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/list &lt;project&gt;</div>
-        <div class="cmd-desc">Show detailed info for a single installed project.</div>
-        <div class="cmd-usage"><b>usage</b> /list &lt;project&gt;<br><span class="ex">example</span> /list dosa</div>
+        <div class="cmd-desc">Show detailed project info</div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONFIGURATION -->
-<section class="section" id="config">
-  <div class="section-inner narrow">
-    <p class="section-label">configuration</p>
-    <div class="section-header">
-      <h2>Configuring emtypyie</h2>
-      <p>Settings persist across sessions in a single config file</p>
-    </div>
-    <p style="font-size:0.82rem; color:var(--ink2); font-weight:300; line-height:1.8; margin-top:1.4rem; max-width:600px;">
-      emtypyie reads <code class="inline">~/.emtypyie/config.json</code> on startup. Anything you set with
-      <code class="inline">/wrap</code> gets written back here automatically, so you rarely need to edit it by hand
-      &mdash; but it's plain JSON if you want to.
-    </p>
-    <div class="config-block">{
-  <span class="k">"theme"</span>: <span class="s">"amber"</span>,
-  <span class="k">"bakafetchColor"</span>: <span class="s">"#f59e0b"</span>,
-  <span class="k">"installDir"</span>: <span class="s">"~/.emtypyie/projects"</span>,
-  <span class="k">"autoUpdate"</span>: <span class="n">true</span>,
-  <span class="k">"registry"</span>: <span class="s">"https://registry.emtypyie.in"</span>
-}</div>
-
-    <div class="config-table-wrap">
-      <table class="config-table">
-        <thead>
-          <tr><th>Environment variable</th><th>Description</th><th>Default</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="key">EMTYPYIE_HOME</td>
-            <td>Overrides where config and projects are stored.</td>
-            <td class="default">~/.emtypyie</td>
-          </tr>
-          <tr>
-            <td class="key">EMTYPYIE_THEME</td>
-            <td>Sets the theme at launch, before any saved config loads.</td>
-            <td class="default">slate</td>
-          </tr>
-          <tr>
-            <td class="key">EMTYPYIE_NO_COLOR</td>
-            <td>Disables colored output for scripting or CI logs.</td>
-            <td class="default">unset</td>
-          </tr>
-          <tr>
-            <td class="key">EMTYPYIE_REGISTRY</td>
-            <td>Points <code class="inline">/get</code> at a custom project registry.</td>
-            <td class="default">registry.emtypyie.in</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </section>
 
 <!-- THEMES -->
-<section class="section" id="themes">
+<section class="section">
   <div class="section-inner">
     <p class="section-label">themes</p>
     <div class="section-header">
@@ -980,42 +662,29 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
         <span class="theme-swatch-name">cyan</span>
       </div>
     </div>
-    <p class="themes-note">Switch anytime with <code class="inline">/wrap all &lt;theme&gt;</code> &mdash; it applies immediately and is saved to your config, so it's still set the next time you open the shell. <code class="inline">/wrap bakafetch &lt;color&gt;</code> changes just the <code class="inline">/bakafetch</code> accent without touching the rest of the theme.</p>
   </div>
 </section>
 
 <!-- FAQ -->
-<section class="section" id="faq">
-  <div class="section-inner narrow">
+<section class="section">
+  <div class="section-inner">
     <p class="section-label">faq</p>
     <div class="section-header">
-      <h2>Questions people actually ask</h2>
+      <h2>Frequently Asked Questions</h2>
     </div>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary>What is emtypyie, actually?<span class="icon">+</span></summary>
-        <p>A small terminal runtime for pulling down and running personal projects by name, instead of cloning repos and remembering how to start each one. Think of it as a personal package manager with a shell attached.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Does it work on Windows?<span class="icon">+</span></summary>
-        <p>Yes, through npm like any other global package. It's tested mainly on macOS and Linux, so if something looks off on Windows, open a GitHub issue with your terminal and Node version.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Where do installed projects live?<span class="icon">+</span></summary>
-        <p>Under <code class="inline">~/.emtypyie/projects</code> by default, or wherever <code class="inline">installDir</code> in your config points. <code class="inline">/list</code> shows exactly what's installed and where.</p>
-      </details>
-      <details class="faq-item">
-        <summary>How do I uninstall it?<span class="icon">+</span></summary>
-        <p>Run <code class="inline">npm uninstall -g emtypyie</code>, then remove <code class="inline">~/.emtypyie</code> if you also want to clear installed projects and saved config.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Can I add my own theme?<span class="icon">+</span></summary>
-        <p>Not yet as a named theme — <code class="inline">/wrap</code> only ships the five built-ins. You can get close by combining a base theme with <code class="inline">/wrap bakafetch</code> for a custom accent.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Is this an official or commercial product?<span class="icon">+</span></summary>
-        <p>No — it's a personal project. See the disclaimer in the footer for the full picture.</p>
-      </details>
+    <div style="margin-top:2rem;display:flex;flex-direction:column;gap:1.5rem;">
+      <div style="background:var(--bg2);border:1px solid var(--rule);border-radius:8px;padding:1.2rem 1.4rem;">
+        <p style="font-family:var(--mono);font-size:0.78rem;font-weight:500;color:var(--orange);margin-bottom:0.4rem;">What is emtypyie-cli, actually?</p>
+        <p style="font-size:0.76rem;color:var(--ink2);line-height:1.7;font-weight:300;">emtypyie-cli is a small npm package that acts as a utility toolkit for terminal workflows. It's essentially a free and open-source command-line utility that bundles together useful things like a neofetch-like screen with system info, downloadable project/package templates, and some interactive terminal utilities &mdash; all in one place, behind a simple slash-command interface.</p>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--rule);border-radius:8px;padding:1.2rem 1.4rem;">
+        <p style="font-family:var(--mono);font-size:0.78rem;font-weight:500;color:var(--orange);margin-bottom:0.4rem;">Is this an official product?</p>
+        <p style="font-size:0.76rem;color:var(--ink2);line-height:1.7;font-weight:300;">No. emtypyie-cli is a personal, open-source project developed and maintained independently. It is not affiliated with any company, organization, or institution. It does not represent any entity or brand beyond my own personal work.</p>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--rule);border-radius:8px;padding:1.2rem 1.4rem;">
+        <p style="font-family:var(--mono);font-size:0.78rem;font-weight:500;color:var(--orange);margin-bottom:0.4rem;">Does this package modify my PATH or system configuration?</p>
+        <p style="font-size:0.76rem;color:var(--ink2);line-height:1.7;font-weight:300;">No. emtypyie-cli does not alter PATH or any system environment variables. It relies entirely on npm's built-in global binary linking &mdash; when you run <code style="font-family:var(--mono);font-size:0.72rem;background:var(--bg3);padding:0.08rem 0.3rem;border-radius:3px;">npm install -g emtypyie-cli</code>, npm automatically symlinks the binary to your global npm prefix, making <code style="font-family:var(--mono);font-size:0.72rem;background:var(--bg3);padding:0.08rem 0.3rem;border-radius:3px;">emtypyie</code> available in your terminal out of the box. No scripts, no config files, no surprises.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1150,7 +819,7 @@ function showToast(msg) {
 
 /* ── VERSION FETCH (from npm registry) ── */
 const versionEl = document.getElementById('cli-version');
-fetch('https://registry.npmjs.org/emtypyie/latest')
+fetch('https://registry.npmjs.org/emtypyie-cli/latest')
   .then(r => { if (!r.ok) throw new Error(); return r.json(); })
   .then(data => {
     versionEl.textContent = 'v' + data.version;
@@ -1175,7 +844,7 @@ const buildEl = document.getElementById('cli-build');
 /* ── INSTALL COPY ── */
 const copyBtn = document.getElementById('install-copy-btn');
 copyBtn.addEventListener('click', () => {
-  navigator.clipboard.writeText('npm install -g emtypyie').then(() => {
+  navigator.clipboard.writeText('npm install -g emtypyie-cli').then(() => {
     copyBtn.textContent = 'Copied!';
     copyBtn.classList.add('copied');
     setTimeout(() => {
@@ -1184,105 +853,6 @@ copyBtn.addEventListener('click', () => {
     }, 2000);
   });
 });
-
-/* ── DOCS SUBNAV ACTIVE STATE ── */
-(function() {
-  const subnavLinks = document.querySelectorAll('.docs-subnav a');
-  const sections = Array.from(subnavLinks).map(l => document.getElementById(l.dataset.section)).filter(Boolean);
-  if (!sections.length) return;
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const link = document.querySelector('.docs-subnav a[data-section="' + entry.target.id + '"]');
-      if (!link) return;
-      if (entry.isIntersecting) {
-        subnavLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-  sections.forEach(s => observer.observe(s));
-})();
-
-/* ── TERMINAL DEMO TYPING ── */
-(function() {
-  const body = document.getElementById('terminal-body');
-  if (!body) return;
-  const lines = [
-    { type: 'cmd', text: '/bakafetch' },
-    { type: 'out', text: 'emtypyie@localhost — 3 projects installed — theme: amber' },
-    { type: 'cmd', text: '/get dosa' },
-    { type: 'out', text: 'installed dosa@1.9.0 → ~/.emtypyie/projects/dosa' },
-    { type: 'cmd', text: '/wrap all violet' },
-    { type: 'out', text: 'theme set to violet', accent: true },
-    { type: 'cmd', text: '/dosa --port 4200' },
-    { type: 'out', text: '→ dosa running on localhost:4200', accent: true }
-  ];
-  let ran = false;
-
-  function typeLine(el, text, cb) {
-    let i = 0;
-    (function step() {
-      el.textContent = text.slice(0, i);
-      i++;
-      if (i <= text.length) {
-        setTimeout(step, 16 + Math.random() * 18);
-      } else if (cb) {
-        cb();
-      }
-    })();
-  }
-
-  function runDemo() {
-    if (ran) return;
-    ran = true;
-    body.innerHTML = '';
-    let idx = 0;
-    function next() {
-      if (idx >= lines.length) {
-        const cursorLine = document.createElement('div');
-        cursorLine.className = 'terminal-line';
-        cursorLine.innerHTML = '<span class="prompt">emty ›</span> <span class="terminal-cursor"></span>';
-        body.appendChild(cursorLine);
-        return;
-      }
-      const line = lines[idx];
-      if (line.type === 'cmd') {
-        const row = document.createElement('div');
-        row.className = 'terminal-line';
-        const prompt = document.createElement('span');
-        prompt.className = 'prompt';
-        prompt.textContent = 'emty › ';
-        const cmdSpan = document.createElement('span');
-        cmdSpan.className = 'cmd';
-        row.appendChild(prompt);
-        row.appendChild(cmdSpan);
-        body.appendChild(row);
-        typeLine(cmdSpan, line.text, () => {
-          idx++;
-          setTimeout(next, 260);
-        });
-      } else {
-        const out = document.createElement('span');
-        out.className = 'terminal-out' + (line.accent ? ' accent' : '');
-        out.textContent = line.text;
-        body.appendChild(out);
-        idx++;
-        setTimeout(next, 380);
-      }
-    }
-    next();
-  }
-
-  const demoObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        runDemo();
-        demoObserver.disconnect();
-      }
-    });
-  }, { threshold: 0.3 });
-  demoObserver.observe(body);
-})();
 
 /* ── SUPPORT ── */
 const UPI_ID = 'workforemty@oksbi';
