@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green">
+<html lang="en" data-theme="amber">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,21 +11,21 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root, [data-theme="green"] {
-  --bg:      #060a07;
-  --bg2:     #0c130d;
-  --bg3:     #101a12;
-  --ink:     #c9f7cf;
-  --ink2:    #8fcf9a;
-  --muted:   #4d6e54;
-  --rule:    #1d3322;
-  --accent:  #39ff7a;
-  --accent-deep: #1c9946;
-  --accent2: #ffcc33;
-  --danger:  #ff5c5c;
+:root, [data-theme="white"] {
+  --bg:      #f7f4f0;
+  --bg2:     #efece5;
+  --bg3:     #e6e2d9;
+  --ink:     #1c1c1c;
+  --ink2:    #4a4a4a;
+  --muted:   #9a9a9a;
+  --rule:    #d6d0c8;
+  --accent:  #ffb000;
+  --accent-deep: #a06800;
+  --accent2: #39ff7a;
+  --danger:  #e85050;
   --display: 'VT323', monospace;
   --mono: 'JetBrains Mono', monospace;
-  --glow: 0 0 6px rgba(57,255,122,0.55);
+  --glow: 0 0 6px rgba(255,176,0,0.55);
 }
 
 [data-theme="amber"] {
@@ -130,7 +130,7 @@ nav {
   box-shadow: var(--glow);
   transition: transform 0.3s cubic-bezier(.65,0,.35,1);
 }
-[data-theme="amber"] .theme-toggle-thumb { transform: translateX(28px); }
+[data-theme="white"] .theme-toggle-thumb { transform: translateX(28px); }
 .theme-toggle .icon-sun, .theme-toggle .icon-moon {
   position: absolute; top: 50%; transform: translateY(-50%);
   transition: opacity 0.25s; font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.02em;
@@ -330,6 +330,15 @@ nav {
 }
 .cmd-card:hover { background: var(--bg3); }
 .cmd-card:hover .cmd-name { color: var(--accent2); }
+
+.funcs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: 2rem;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
 .cmd-name {
   font-family: var(--mono);
   font-size: 0.9rem;
@@ -414,7 +423,7 @@ nav {
   color: var(--ink);
   transition: color 0.15s;
 }
-.faq-question::before { content: '?'; color: var(--muted); margin-right: 0.7rem; font-weight: 700; }
+.faq-question::before { content: '?'; color: var(--muted); margin-right: 0.7rem; font-weight: 700; display: inline-block; width: 0.8rem; text-align: center; }
 .faq-item.open .faq-question { color: var(--accent); }
 .faq-item.open .faq-question::before { content: '›'; color: var(--accent); }
 
@@ -447,6 +456,7 @@ nav {
   color: var(--ink2);
   line-height: 1.75;
   font-weight: 400;
+  text-align: center;
 }
 .faq-answer code {
   font-family: var(--mono);
@@ -456,8 +466,8 @@ nav {
   color: var(--accent);
   padding: 0.08rem 0.32rem;
 }
-.faq-answer ul { margin: 0.5rem 0 0.2rem 1.1rem; }
-.faq-answer li { margin-bottom: 0.3rem; }
+.faq-answer ul { margin: 0.5rem 0 0.2rem 1.1rem; text-align: left; }
+.faq-answer li { margin-bottom: 0.3rem; text-align: left; }
 
 /* ── FOOTER ── */
 footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: background 0.3s; }
@@ -557,7 +567,7 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
   .support-fab { top: 62px; right: 12px; padding: 0.48rem 0.8rem; font-size: 0.62rem; }
   .cli-hero { padding: 6vh 1.4rem 4vh; }
   .section-inner { padding: 3rem 1.4rem 3.5rem; }
-  .commands-grid { grid-template-columns: 1fr; }
+  .commands-grid, .funcs-grid { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; padding: 2rem 1.4rem; }
   .footer-links { align-items: flex-start; }
   .footer-bottom { padding: 1.2rem 1.4rem 1.8rem; flex-direction: column; gap: 1rem; }
@@ -573,6 +583,7 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
   .cli-hero { padding: 7vh 2rem 5vh; }
   .section-inner { padding: 3.5rem 2rem; }
   .commands-grid { grid-template-columns: repeat(2, 1fr); }
+  .funcs-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-inner, .footer-bottom { padding-left: 2rem; padding-right: 2rem; }
 }
 
@@ -620,8 +631,8 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
       <li><a href="https://github.com/myrachane" target="_blank" rel="noopener">github</a></li>
     </ul>
     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle terminal color" title="Toggle theme">
-      <span class="icon-sun">GRN</span>
-      <span class="icon-moon">AMB</span>
+      <span class="icon-sun">AMB</span>
+      <span class="icon-moon">WHT</span>
       <div class="theme-toggle-thumb"></div>
     </button>
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
@@ -669,6 +680,10 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
       <code>npm install -g emtypyie-cli</code>
       <button class="install-copy" id="install-copy-btn" type="button">Copy</button>
     </div>
+    <div class="install-cmd">
+      <code>winget install myrachane.emtypyie-cli</code>
+      <button class="install-copy" id="install-copy-winget-btn" type="button">Copy</button>
+    </div>
     <p class="install-deps-note">After installation, run <code style="font-family:var(--mono);font-size:0.72rem;background:var(--bg2);border:1px solid var(--rule);color:var(--accent);padding:0.08rem 0.3rem;">emtypyie</code> in your terminal to start.</p>
     <p class="install-gh-link"><a href="https://github.com/myrachane/emtypyie-cli" target="_blank" rel="noopener">Report issues on GitHub</a></p>
   </div>
@@ -688,48 +703,170 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
         <div class="cmd-desc">List all available commands</div>
       </div>
       <div class="cmd-card">
+        <div class="cmd-name">/about</div>
+        <div class="cmd-desc">Show ASCII banner, version, and license</div>
+      </div>
+      <div class="cmd-card">
         <div class="cmd-name">/get &lt;project&gt;</div>
         <div class="cmd-desc">Download and install a project</div>
       </div>
       <div class="cmd-card">
-        <div class="cmd-name">/bakafetch</div>
-        <div class="cmd-desc">Display system info with ASCII art</div>
+        <div class="cmd-name">/flash &lt;project&gt;</div>
+        <div class="cmd-desc">Re-download the latest version</div>
       </div>
       <div class="cmd-card">
-        <div class="cmd-name">/wrap all &lt;theme&gt;</div>
-        <div class="cmd-desc">Change the CLI color scheme</div>
+        <div class="cmd-name">/rm &lt;project&gt;</div>
+        <div class="cmd-desc">Delete local project files</div>
       </div>
       <div class="cmd-card">
-        <div class="cmd-name">/wrap bakafetch &lt;color&gt;</div>
-        <div class="cmd-desc">Change bakafetch accent color</div>
-      </div>
-      <div class="cmd-card">
-        <div class="cmd-name">/clear</div>
-        <div class="cmd-desc">Clear the terminal screen</div>
+        <div class="cmd-name">/info &lt;project&gt;</div>
+        <div class="cmd-desc">Show detailed project information</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/list</div>
-        <div class="cmd-desc">List installed projects with versions</div>
-      </div>
-      <div class="cmd-card">
-        <div class="cmd-name">/update</div>
-        <div class="cmd-desc">Update emtypyie to the latest version</div>
+        <div class="cmd-desc">List available projects on CDN</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/docs &lt;project&gt;</div>
         <div class="cmd-desc">Open project documentation on GitHub</div>
       </div>
       <div class="cmd-card">
+        <div class="cmd-name">/issue &lt;project&gt;</div>
+        <div class="cmd-desc">Open issue tracker / file bug with -m</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/setenv</div>
+        <div class="cmd-desc">Set environment variables interactively</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/wrap &lt;dir&gt;</div>
+        <div class="cmd-desc">Stage files in directory for commit</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/wrap &lt;dir&gt; --commit -m</div>
+        <div class="cmd-desc">Stage, commit &amp; push in one command</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/wrap all</div>
+        <div class="cmd-desc">Stage all subdirectories at once</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/wrap npm publish</div>
+        <div class="cmd-desc">Auto-bump version &amp; publish to npm</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/wrap repo "name"</div>
+        <div class="cmd-desc">Create GitHub repo / submit PR</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/theme &lt;name&gt;</div>
+        <div class="cmd-desc">Change CLI color scheme</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/bakafetch / /bf</div>
+        <div class="cmd-desc">Display system info with ASCII art</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/wiki</div>
+        <div class="cmd-desc">Open wiki.emtypyie.in in browser</div>
+      </div>
+      <div class="cmd-card">
         <div class="cmd-name">/changelog</div>
         <div class="cmd-desc">View release history on GitHub</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/update</div>
+        <div class="cmd-desc">Update emtypyie-cli to latest version</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/clear</div>
+        <div class="cmd-desc">Clear the terminal screen</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/exit</div>
+        <div class="cmd-desc">Quit the CLI</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/&lt;project&gt;</div>
         <div class="cmd-desc">Run an installed project by name</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEW FEATURES -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-label">new features</p>
+    <div class="section-header">
+      <h2>What's New</h2>
+      <p>Recent additions to emtypyie-cli</p>
+    </div>
+    <div class="funcs-grid">
       <div class="cmd-card">
-        <div class="cmd-name">/list &lt;project&gt;</div>
-        <div class="cmd-desc">Show detailed project info</div>
+        <div class="cmd-name">Dynamic CDN Fetch</div>
+        <div class="cmd-desc">Projects fetched live from cdn.emtypyie.in/dev — no hardcoded list</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/about</div>
+        <div class="cmd-desc">ASCII banner with version, release date, copyright &amp; random license key</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/wiki</div>
+        <div class="cmd-desc">Quick-launch wiki.emtypyie.in from the terminal</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/flash &amp; /rm</div>
+        <div class="cmd-desc">Re-download latest version or delete project files</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/issue</div>
+        <div class="cmd-desc">Open project issue tracker; file bug with -m flag</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/wrap</div>
+        <div class="cmd-desc">Full dev workflow: stage, commit, push, npm bump, create repo &amp; PR</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/setenv</div>
+        <div class="cmd-desc">Interactive prompts to set tokens, credentials &amp; environment variables</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">Winget Support</div>
+        <div class="cmd-desc">Install via winget: myrachane.emtypyie-cli</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">White Theme</div>
+        <div class="cmd-desc">Light color scheme for the website</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REMOVED FEATURES -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-label">removed features</p>
+    <div class="section-header">
+      <h2>Deprecated &amp; Removed</h2>
+      <p>What no longer exists in the current version</p>
+    </div>
+    <div class="commands-grid">
+      <div class="cmd-card">
+        <div class="cmd-name">GUI Interface</div>
+        <div class="cmd-desc">Full gui/ directory removed — CLI-only from v2</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">Hardcoded Projects</div>
+        <div class="cmd-desc">Local projects map removed; everything fetched from CDN now</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">help.js Command</div>
+        <div class="cmd-desc">Dedicated /help command module removed; merged into cli.js</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">MIT License</div>
+        <div class="cmd-desc">Project is no more opensourced</div>
       </div>
     </div>
   </div>
@@ -741,7 +878,7 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
     <p class="section-label">themes</p>
     <div class="section-header">
       <h2>Color Schemes</h2>
-      <p>Built-in themes to match your workflow</p>
+      <p>Built-in themes + customizable bakafetch accent (amber, white, slate, violet, cyan)</p>
     </div>
     <div class="themes-list">
       <div class="theme-swatch">
@@ -749,8 +886,8 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
         <span class="theme-swatch-name">slate</span>
       </div>
       <div class="theme-swatch">
-        <div class="theme-swatch-color" style="background:#22c55e;"></div>
-        <span class="theme-swatch-name">green</span>
+        <div class="theme-swatch-color" style="background:#f7f4f0;border-color:#d6d0c8;"></div>
+        <span class="theme-swatch-name">white</span>
       </div>
       <div class="theme-swatch">
         <div class="theme-swatch-color" style="background:#f59e0b;"></div>
@@ -780,11 +917,11 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
 
       <div class="faq-item">
         <button class="faq-question" type="button">
-          What is emtypyie-cli, actually?
+          What is emtypyie-cli?
           <span class="faq-icon"></span>
         </button>
         <div class="faq-answer-wrap"><div class="faq-answer-inner"><div class="faq-answer">
-          emtypyie-cli is a small npm package that acts as a utility toolkit for terminal workflows. It's essentially a free and open-source command-line utility that bundles together useful things like a neofetch-like screen with system info, downloadable project/package templates, and some interactive terminal utilities &mdash; all in one place, behind a simple slash-command interface.
+                                      YES!
         </div></div></div>
       </div>
 
@@ -794,7 +931,7 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
           <span class="faq-icon"></span>
         </button>
         <div class="faq-answer-wrap"><div class="faq-answer-inner"><div class="faq-answer">
-          No. emtypyie-cli is a personal, open-source project developed and maintained independently. It is not affiliated with any company, organization, or institution. It does not represent any entity or brand beyond my own personal work.
+          Yes, Emtypyie.cli is an official product of EMTYPYIE.IN and is maintained by The Department of Informatics. It will be used as the core runtime for further projects and tools.
         </div></div></div>
       </div>
 
@@ -816,9 +953,9 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
         <div class="faq-answer-wrap"><div class="faq-answer-inner"><div class="faq-answer">
           emtypyie-cli runs anywhere Node.js runs &mdash; Windows, macOS, and Linux. You'll need <strong>Node.js 18 or newer</strong> (LTS recommended). It's tested primarily on Windows 10/11 and modern Linux distros; macOS should work fine but gets less day-to-day testing since it's a solo project.
           <ul>
-            <li>Windows 10 / 11 &mdash; primary target</li>
-            <li>Linux (Ubuntu, Debian, Arch, etc.) &mdash; fully supported</li>
-            <li>macOS &mdash; works, lighter testing</li>
+            <li>Windows 10 / 11  </li>
+            <li>Ubuntu / Arch </li>
+            <li>macOS &mdash; Should work fine though</li>
           </ul>
         </div></div></div>
       </div>
@@ -839,7 +976,7 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
           <span class="faq-icon"></span>
         </button>
         <div class="faq-answer-wrap"><div class="faq-answer-inner"><div class="faq-answer">
-          Projects are small downloadable templates or tools bundled with emtypyie &mdash; think starter kits, scripts, and mini-utilities you can pull straight into the CLI. Running <code>/get &lt;project&gt;</code> fetches and installs one locally, <code>/list</code> shows everything you've installed, and <code>/&lt;project&gt;</code> runs it directly by name.
+          Projects are downloadable templates or tools available on the emtypyie project registry. Running <code>/get &lt;project&gt;</code> fetches the latest version from <code>cdn.emtypyie.in/dev</code> and installs it locally. <code>/list</code> shows available projects, and <code>/&lt;project&gt;</code> runs an installed one directly by name.
         </div></div></div>
       </div>
 
@@ -849,7 +986,7 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
           <span class="faq-icon"></span>
         </button>
         <div class="faq-answer-wrap"><div class="faq-answer-inner"><div class="faq-answer">
-          emtypyie-cli doesn't collect analytics, telemetry, or personal data. Network requests are limited to what's needed to fetch projects and check for updates. The source is fully open on GitHub, so you can read exactly what it does before you install it &mdash; that's the whole point of it being open-source.
+          emtypyie-cli doesn't collect analytics, telemetry, or personal data. Network requests are limited to what's needed to fetch projects and check for updates. The source is fully available on GitHub, so you can read exactly what it does before you install it.
         </div></div></div>
       </div>
 
@@ -946,7 +1083,7 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
 </div>
 
 <script>
-/* ── THEME TOGGLE (green phosphor / amber phosphor) ── */
+/* ── THEME TOGGLE (amber phosphor / white light) ── */
 const html = document.documentElement;
 const themeToggle = document.getElementById('theme-toggle');
 const footerLogo = document.getElementById('footer-logo');
@@ -954,15 +1091,17 @@ const footerLogo = document.getElementById('footer-logo');
 function applyTheme(theme) {
   html.setAttribute('data-theme', theme);
   localStorage.setItem('emty-theme', theme);
-  footerLogo.src = 'https://cdn.emtypyie.in/assets/covi_white.png';
+  footerLogo.src = theme === 'white'
+    ? 'https://cdn.emtypyie.in/assets/covi_black.png'
+    : 'https://cdn.emtypyie.in/assets/covi_white.png';
 }
 
-const savedTheme = localStorage.getItem('emty-theme') || 'green';
+const savedTheme = localStorage.getItem('emty-theme') || 'amber';
 applyTheme(savedTheme);
 
 themeToggle.addEventListener('click', () => {
   const current = html.getAttribute('data-theme');
-  applyTheme(current === 'amber' ? 'green' : 'amber');
+  applyTheme(current === 'white' ? 'amber' : 'white');
 });
 
 /* ── HAMBURGER ── */
@@ -1028,6 +1167,18 @@ copyBtn.addEventListener('click', () => {
   });
 });
 
+const wingetCopyBtn = document.getElementById('install-copy-winget-btn');
+wingetCopyBtn.addEventListener('click', () => {
+  navigator.clipboard.writeText('winget install myrachane.emtypyie-cli').then(() => {
+    wingetCopyBtn.textContent = 'Copied!';
+    wingetCopyBtn.classList.add('copied');
+    setTimeout(() => {
+      wingetCopyBtn.textContent = 'Copy';
+      wingetCopyBtn.classList.remove('copied');
+    }, 2000);
+  });
+});
+
 /* ── FAQ ACCORDION ── */
 document.querySelectorAll('.faq-item').forEach(item => {
   const btn = item.querySelector('.faq-question');
@@ -1088,8 +1239,8 @@ document.getElementById('support-continue-btn').addEventListener('click', () => 
   qrHeading.textContent = `Pay \u20B9${supportAmount}`;
 
   const theme = html.getAttribute('data-theme');
-  const fgColor = theme === 'amber' ? 'ffdba3' : 'c9f7cf';
-  const bgColor = theme === 'amber' ? '18110a' : '101a12';
+  const fgColor = theme === 'white' ? '1c1c1c' : 'ffdba3';
+  const bgColor = theme === 'white' ? 'e6e2d9' : '18110a';
   const upiLink = `upi://pay?pa=${UPI_ID}&pn=${UPI_NAME}&am=${supportAmount}&cu=INR&tn=Support%20for%20Emty`;
 
   document.getElementById('upi-app-link').href = upiLink;
