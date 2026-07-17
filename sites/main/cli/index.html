@@ -674,17 +674,21 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
     <p class="section-label">installation</p>
     <div class="section-header">
       <h2>Get Started</h2>
-      <p>Install globally via npm &mdash; requires Node.js 18+</p>
-    </div>
-    <div class="install-cmd">
-      <code>npm install -g emtypyie-cli</code>
-      <button class="install-copy" id="install-copy-btn" type="button">Copy</button>
+      <p>Install the native C binary (recommended) or the Node.js version</p>
     </div>
     <div class="install-cmd">
       <code>winget install myrachane.emtypyie-cli</code>
       <button class="install-copy" id="install-copy-winget-btn" type="button">Copy</button>
     </div>
-    <p class="install-deps-note">After installation, run <code style="font-family:var(--mono);font-size:0.72rem;background:var(--bg2);border:1px solid var(--rule);color:var(--accent);padding:0.08rem 0.3rem;">emtypyie</code> in your terminal to start.</p>
+    <div class="install-cmd">
+      <code>choco install emtypyie-cli</code>
+      <button class="install-copy" id="install-copy-choco-btn" type="button">Copy</button>
+    </div>
+    <div class="install-cmd">
+      <code>npm install -g emtypyie-cli</code>
+      <button class="install-copy" id="install-copy-btn" type="button">Copy</button>
+    </div>
+    <p class="install-deps-note">The winget &amp; choco packages ship the self-contained C native build. npm installs the Node.js version (requires Node 18+). After installation, run <code style="font-family:var(--mono);font-size:0.72rem;background:var(--bg2);border:1px solid var(--rule);color:var(--accent);padding:0.08rem 0.3rem;">emtypyie</code> in your terminal to start.</p>
     <p class="install-gh-link"><a href="https://github.com/myrachane/emtypyie-cli" target="_blank" rel="noopener">Report issues on GitHub</a></p>
   </div>
 </section>
@@ -757,6 +761,14 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
       <div class="cmd-card">
         <div class="cmd-name">/wrap repo "name"</div>
         <div class="cmd-desc">Create GitHub repo / submit PR</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/shell</div>
+        <div class="cmd-desc">Enter interactive shell mode</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">/larpino &lt;cmd&gt;</div>
+        <div class="cmd-desc">LLM inference engine: enable, disable, status</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">/theme &lt;name&gt;</div>
@@ -834,6 +846,14 @@ footer { border-top: 1px solid var(--rule); background: var(--bg2); transition: 
       <div class="cmd-card">
         <div class="cmd-name">Winget Support</div>
         <div class="cmd-desc">Install via winget: myrachane.emtypyie-cli</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">Larpino AI Engine</div>
+        <div class="cmd-desc">Local LLM inference — load GGUF models and chat via /larpino</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-name">Native C Binary</div>
+        <div class="cmd-desc">Self-contained C build shipped on GitHub Releases &amp; package managers</div>
       </div>
       <div class="cmd-card">
         <div class="cmd-name">White Theme</div>
@@ -1178,6 +1198,20 @@ wingetCopyBtn.addEventListener('click', () => {
     }, 2000);
   });
 });
+
+const chocoCopyBtn = document.getElementById('install-copy-choco-btn');
+if (chocoCopyBtn) {
+  chocoCopyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText('choco install emtypyie-cli').then(() => {
+      chocoCopyBtn.textContent = 'Copied!';
+      chocoCopyBtn.classList.add('copied');
+      setTimeout(() => {
+        chocoCopyBtn.textContent = 'Copy';
+        chocoCopyBtn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+}
 
 /* ── FAQ ACCORDION ── */
 document.querySelectorAll('.faq-item').forEach(item => {
