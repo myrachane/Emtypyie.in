@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Emtypyie.cli is a package manager and terminal runtime for EMTYPYIE projects" />
+  <title>wiki Emtypyie.cli</title>
+  <style>
+    /* ─── DESIGN TOKENS — simple black / white / red ────────── */
+    :root {
+      --bg:           #FFFFFF;
+      --surface:      #F7F7F7;
+      --surface-2:    #EFEFEF;
+      --border:       #D9D9D9;
+      --border-light: #EAEAEA;
+      --text:         #111111;
+      --text-muted:   #4A4A4A;
+      --text-faint:   #8A8A8A;
+      --accent:       #C81E1E;
+      --accent-hover: #A31616;
+      --accent-dim:   #FBE7E7;
+      --green:        #1E7A34;
+      --green-bg:     #E7F5EA;
+      --amber:        #8A5A00;
+      --amber-bg:     #FDF1DC;
+      --slate:        #333333;
+      --slate-bg:     #ECECEC;
+      --code-bg:      #0E0E0E;
+      --code-text:    #E8E8E8;
+      --code-border:  #1E1E1E;
+      --shadow:       0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md:    0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+      --radius:       3px;
+      --font-serif:   'Georgia', 'Times New Roman', serif;
+      --font-sans:    system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+      --font-mono:    'Courier New', 'Lucida Console', Courier, monospace;
+      --max-w:        900px;
+      --nav-h:        52px;
+    }
+
+    [data-theme="dark"] {
+      --bg:           #0A0A0A;
+      --surface:      #141414;
+      --surface-2:    #1C1C1C;
+      --border:       #2A2A2A;
+      --border-light: #202020;
+      --text:         #F0F0F0;
+      --text-muted:   #A0A0A0;
+      --text-faint:   #666666;
+      --accent:       #FF4141;
+      --accent-hover: #FF6A6A;
+      --accent-dim:   #2A0E0E;
+      --green:        #4ADE80;
+      --green-bg:     #0F2417;
+      --amber:        #FCD34D;
+      --amber-bg:     #241C08;
+      --slate:        #B8B8B8;
+      --slate-bg:     #1A1A1A;
+      --code-bg:      #050505;
+      --code-text:    #D4D4D4;
+      --code-border:  #1A1A1A;
+      --shadow:       0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md:    0 4px 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.65;
+      min-height: 100vh;
+      transition: background 0.2s, color 0.2s;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── TEXTURE OVERLAY ────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(circle, var(--border) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.3;
+    }
+    [data-theme="dark"] body::before { opacity: 0.12; }
+
+    /* ─── NAVBAR ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      z-index: 100;
+      transition: background 0.2s;
+    }
+    .nav-inner {
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+    }
+    .nav-brand .slash { color: var(--text-faint); margin: 0 5px; }
+    .nav-brand .wiki-part { color: var(--accent); font-weight: 700; }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover {
+      color: var(--text);
+      border-color: var(--text-muted);
+      background: var(--surface);
+    }
+    .nav-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ─── PAGE ───────────────────────────────────────────────── */
+    .page {
+      position: relative;
+      z-index: 1;
+      padding-top: var(--nav-h);
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    /* ─── BREADCRUMB ─────────────────────────────────────────── */
+    .breadcrumb {
+      padding: 20px 0 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb .sep { color: var(--border); }
+
+    /* ─── PROJECT HEADER ─────────────────────────────────────── */
+    .project-header {
+      padding: 32px 0 40px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .project-title {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+    .badge-active  { color: var(--green);  background: var(--green-bg); }
+    .badge-paused  { color: var(--amber);  background: var(--amber-bg); }
+
+    .project-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .cta-btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .cta-btn svg { width: 14px; height: 14px; }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .meta-item {
+      padding: 10px 16px;
+      border-right: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background: var(--surface);
+    }
+    .meta-item:last-child { border-right: none; }
+    .meta-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .meta-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .meta-val a { color: var(--accent); }
+    .meta-val a:hover { color: var(--accent-hover); }
+
+    /* ─── TOC ────────────────────────────────────────────────── */
+    .toc {
+      padding: 20px 0 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .toc-link {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      padding: 4px 10px;
+      border: 1px solid var(--border-light);
+      border-radius: 2px;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+    .toc-link:hover {
+      color: var(--accent);
+      background: var(--surface);
+      border-color: var(--border);
+    }
+
+    /* ─── CONTENT SECTIONS ───────────────────────────────────── */
+    .content { padding: 0 0 40px; }
+
+    .doc-section {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .doc-section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+    }
+    .section-name {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .prose {
+      max-width: 680px;
+      color: var(--text-muted);
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+    .prose p + p { margin-top: 14px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+    .prose code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      background: var(--surface-2);
+      color: var(--accent);
+      padding: 1px 5px;
+      border-radius: 2px;
+      border: 1px solid var(--border-light);
+    }
+    .prose ul {
+      margin: 14px 0;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .prose ul li { color: var(--text-muted); font-size: 14.5px; }
+    .prose ul li::marker { color: var(--accent); }
+
+    /* ─── CONTRIBUTORS ───────────────────────────────────────── */
+    .contributors-section {
+      padding: 36px 0 32px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .contributors-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 16px;
+    }
+    .contributors-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .contributor-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px 8px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      transition: border-color 0.15s, background 0.15s;
+      text-decoration: none;
+    }
+    .contributor-card:hover {
+      border-color: var(--border);
+      background: var(--surface-2);
+    }
+    .contributor-pfp {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .contributor-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .contributor-name {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text);
+      font-weight: 600;
+    }
+    .contributor-role {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+    }
+    .contributor-open {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      padding: 4px 12px;
+      border: 1px dashed var(--border);
+      border-radius: 2px;
+      background: var(--surface);
+    }
+
+    /* ─── FILE LABEL / CODE ──────────────────────────────────── */
+    .file-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      margin-bottom: 6px;
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .file-label::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      opacity: 0.6;
+      border-radius: 1px;
+    }
+    .code-block {
+      margin: 8px 0 20px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--code-border);
+      background: var(--code-bg);
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--code-border);
+      background: color-mix(in srgb, var(--code-bg) 60%, black);
+    }
+    .code-lang {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .code-copy {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .code-copy:hover { color: var(--accent); }
+    pre { margin: 0; overflow-x: auto; }
+    pre code {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.75;
+      color: var(--code-text);
+      padding: 16px 18px;
+      background: none;
+      border: none;
+    }
+    .tok-kw   { color: var(--accent); }
+    .tok-fn   { color: #9dd6d6; }
+    .tok-str  { color: #a3d9a5; }
+    .tok-cmt  { color: #6b6b6b; font-style: italic; }
+    .tok-num  { color: #c9a96e; }
+    .tok-cls  { color: #e0c46e; }
+
+    table { width: 100%; border-collapse: collapse; margin: 16px 0 28px; font-size: 13.5px; }
+    th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border-light); }
+    th { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-faint); font-weight: 500; }
+    td code { background: var(--accent-dim); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-size: 12.5px; }
+
+    /* ─── DEV LOGS ───────────────────────────────────────────── */
+    .devlogs-list { display: flex; flex-direction: column; gap: 0; }
+    .log-entry {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0 28px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-meta { padding-top: 3px; flex-shrink: 0; }
+    .log-date { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); white-space: nowrap; }
+    .log-index { font-family: var(--font-mono); font-size: 9px; color: var(--border); letter-spacing: 0.1em; margin-top: 3px; }
+    .log-version { font-family: var(--font-mono); font-size: 9px; color: var(--accent); letter-spacing: 0.08em; margin-top: 4px; opacity: 0.85; }
+    .log-title { font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+    .log-content { font-size: 14px; color: var(--text-muted); line-height: 1.8; max-width: 620px; }
+    .log-content p + p { margin-top: 12px; }
+    .log-content code { font-family: var(--font-mono); font-size: 12px; background: var(--surface-2); color: var(--accent); padding: 1px 5px; border-radius: 2px; border: 1px solid var(--border-light); }
+
+    .status-notice {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: var(--amber-bg);
+      border: 1px solid color-mix(in srgb, var(--amber) 30%, transparent);
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--amber);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      max-width: 620px;
+    }
+    .status-notice-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ─── LIKE / SHARE BAR ───────────────────────────────────── */
+    .action-bar {
+      padding: 28px 0;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .action-btn:hover { border-color: var(--border); background: var(--surface-2); color: var(--text); }
+    .action-btn.liked { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); background: var(--accent-dim); }
+    .action-btn svg { width: 14px; height: 14px; }
+    .action-sep { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); }
+    #shareToast { font-family: var(--font-mono); font-size: 11px; color: var(--green); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer { border-top: 1px solid var(--border); background: var(--surface); margin-top: 40px; }
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 24px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .footer-brand { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); }
+    .footer-brand span { color: var(--accent); }
+    .footer-logo {
+      width: 26px;
+      height: 26px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--code-bg);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .footer-left { display: flex; align-items: center; gap: 10px; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      nav { padding: 0 16px; }
+      .page { padding-left: 16px; padding-right: 16px; }
+      .log-entry { grid-template-columns: 1fr; gap: 6px; }
+      .meta-row { flex-wrap: wrap; }
+      .meta-item { flex: 1 1 auto; min-width: 120px; }
+      .header-top { flex-direction: column; gap: 8px; }
+      .badge { margin-top: 0; }
+      .nav-btn span { display: none; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .action-bar { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">
+        emtypyie-cli
+        <span class="slash">/</span>
+        <span class="wiki-part">wiki</span>
+      </a>
+      <div class="nav-actions">
+        <button class="nav-btn" id="themeToggle" aria-label="Toggle theme">
+          <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <span id="themeLabel">light</span>
+        </button>
+        <a href="https://github.com/myrachane/Emtypyie.cli" target="_blank" rel="noopener" class="nav-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+          <span>github</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page" style="padding-top: calc(var(--nav-h) + 0px)">
+
+    <!-- ── BREADCRUMB ── -->
+    <div class="breadcrumb">
+      <a href="/">wiki</a>
+      <span class="sep">/</span>
+      <span>Emtypyie.cli</span>
+    </div>
+
+    <!-- ── PROJECT HEADER ── -->
+    <header class="project-header">
+      <div class="header-top">
+        <h1 class="project-title">Emtypyie.cli</h1>
+        <span class="badge badge-active">Active</span>
+      </div>
+      <p class="project-desc">
+        Package manager and terminal runtime for EMTYPYIE — run projects from your
+        terminal with ease. Ships as a portable C native binary and a cross-platform
+        Node.js build, both driven by the same interactive shell.
+      </p>
+      <a class="cta-btn" href="https://github.com/myrachane/Emtypyie.cli/releases" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        download latest release
+      </a>
+      <div class="meta-row">
+        <div class="meta-item">
+          <span class="meta-label">Version</span>
+          <span class="meta-val">v2.5.8</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Language</span>
+          <span class="meta-val">C / C++ / JavaScript</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Builds</span>
+          <span class="meta-val">C native · Node.js (pkg)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Source</span>
+          <span class="meta-val"><a href="https://github.com/myrachane/Emtypyie.cli" target="_blank" rel="noopener">github.com/myrachane/Emtypyie.cli</a></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- TOC -->
+    <div class="toc">
+      <a href="#contributors" class="toc-link">§0 Contributors</a>
+      <a href="#overview"     class="toc-link">§1 Overview</a>
+      <a href="#install"      class="toc-link">§2 Install &amp; Launch</a>
+      <a href="#commands"     class="toc-link">§3 Commands</a>
+      <a href="#architecture" class="toc-link">§4 Architecture</a>
+      <a href="#devlogs"      class="toc-link">§5 Dev Logs</a>
+    </div>
+
+    <!-- ── CONTENT ── -->
+    <div class="content">
+
+      <!-- §0 CONTRIBUTORS -->
+      <section class="contributors-section doc-section" id="contributors">
+        <div class="section-label">
+          <span class="section-num">§0</span>
+          <span class="section-name">Contributors</span>
+        </div>
+        <div class="contributors-list">
+          <a href="https://github.com/myrachane" target="_blank" rel="noopener" class="contributor-card">
+            <img
+              class="contributor-pfp"
+              src="https://github.com/myrachane.png"
+              alt="myrachane"
+              width="32"
+              height="32"
+              style="object-fit: cover; background: var(--surface-2); font-size: 0;"
+              onerror="this.outerHTML = '<span class=&quot;contributor-pfp&quot;>M</span>'"
+            />
+            <div class="contributor-info">
+              <span class="contributor-name">myrachane</span>
+              <span class="contributor-role">creator &amp; maintainer</span>
+            </div>
+          </a>
+        </div>
+        <a href="https://github.com/myrachane/Emtypyie.cli" target="_blank" rel="noopener" class="contributor-open">see more on github.com/myrachane/Emtypyie.cli</a>
+      </section>
+
+      <!-- §1 OVERVIEW -->
+      <section class="doc-section" id="overview">
+        <div class="section-label">
+          <span class="section-num">§1</span>
+          <span class="section-name">Overview</span>
+        </div>
+        <div class="prose">
+          <p>
+            <strong>Emtypyie.cli</strong> is the package manager and runtime for the
+            EMTYPYIE ecosystem. Running <code>emtypyie</code> with no arguments prints a
+            startup boot animation and drops you into an interactive shell where you can
+            list, install, and manage projects pulled live from a CDN registry.
+          </p>
+          <p>Core features:</p>
+          <ul>
+            <li>Interactive shell with a startup boot animation (skippable via flag or env var)</li>
+            <li>Direct one-off commands without entering the shell, e.g. <code>emtypyie /list</code></li>
+            <li>Live CDN-backed project registry — install, inspect, and update anything listed</li>
+            <li>Auto-installer for common toolchains, e.g. <code>/get gcc</code> for GCC/G++</li>
+            <li><strong>Larpino</strong> — a built-in LLAMA inference engine written directly into the C core</li>
+            <li><code>/bf</code> — a neofetch-style system info screen ("bakafetch") with braille/Unicode art</li>
+            <li>Five color themes: <code>slate</code>, <code>green</code>, <code>amber</code>, <code>violet</code>, <code>cyan</code></li>
+          </ul>
+          <p>
+            Two separate builds are maintained side by side: a dependency-free C native
+            binary (the primary, recommended path on Windows) and a Node.js build ported
+            with <code>pkg</code> for everywhere else.
+          </p>
+        </div>
+      </section>
+
+      <!-- §2 INSTALL -->
+      <section class="doc-section" id="install">
+        <div class="section-label">
+          <span class="section-num">§2</span>
+          <span class="section-name">Install &amp; Launch</span>
+        </div>
+        <div class="prose">
+          <p>Pick whichever build fits how you already manage tools on your machine.</p>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">shell</span>
+            <button class="code-copy" onclick="copyCode(this)">copy</button>
+          </div>
+          <pre><code><span class="tok-cmt"># Windows (Winget) — C native build</span>
+winget install myrachane.emtypyie-cli
+
+<span class="tok-cmt"># Windows (Chocolatey) — C native build</span>
+choco install emtypyie-cli
+
+<span class="tok-cmt"># npm (all platforms) — Node.js build</span>
+npm install -g emtypyie-cli</code></pre>
+        </div>
+
+        <div class="prose">
+          <p>
+            Once installed, <code>emtypyie</code> is on your <code>PATH</code>. Run it with
+            no arguments to boot the interactive shell:
+          </p>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">shell</span>
+            <button class="code-copy" onclick="copyCode(this)">copy</button>
+          </div>
+          <pre><code>emtypyie
+
+<span class="tok-cmt"># skip the boot animation</span>
+emtypyie --no-animation
+<span class="tok-cmt"># or</span>
+set EMTYPYIE_NO_ANIM=1</code></pre>
+        </div>
+
+        <div class="prose">
+          <p>Direct commands also work without ever entering the shell, e.g. <code>emtypyie /list</code> or <code>emtypyie /get gcc</code>.</p>
+        </div>
+      </section>
+
+      <!-- §3 COMMANDS -->
+      <section class="doc-section" id="commands">
+        <div class="section-label">
+          <span class="section-num">§3</span>
+          <span class="section-name">Commands</span>
+        </div>
+        <table>
+          <tr><th>Command</th><th>Description</th></tr>
+          <tr><td><code>/help</code></td><td>Show help</td></tr>
+          <tr><td><code>/list</code></td><td>List available projects from the CDN</td></tr>
+          <tr><td><code>/get &lt;project&gt;</code></td><td>Install a project</td></tr>
+          <tr><td><code>/get gcc</code></td><td>Auto-install GCC/G++ compiler</td></tr>
+          <tr><td><code>/get larpino@1b</code></td><td>Download a LLAMA GGUF model and load it</td></tr>
+          <tr><td><code>/info &lt;project&gt;</code></td><td>Show project details</td></tr>
+          <tr><td><code>/flash &lt;project&gt;</code></td><td>Re-download the latest version</td></tr>
+          <tr><td><code>/rm &lt;project&gt;</code></td><td>Remove a project</td></tr>
+          <tr><td><code>/theme &lt;name&gt;</code></td><td>Change the color theme</td></tr>
+          <tr><td><code>/bf</code></td><td>System info screen (bakafetch)</td></tr>
+          <tr><td><code>/docs &lt;project&gt;</code></td><td>Open project docs</td></tr>
+          <tr><td><code>/shell</code></td><td>Enter interactive mode</td></tr>
+          <tr><td><code>/larpino enable|disable|status</code></td><td>Control the LLAMA inference engine</td></tr>
+          <tr><td><code>/clear</code></td><td>Clear the screen</td></tr>
+        </table>
+      </section>
+
+      <!-- §4 ARCHITECTURE -->
+      <section class="doc-section" id="architecture">
+        <div class="section-label">
+          <span class="section-num">§4</span>
+          <span class="section-name">Architecture</span>
+        </div>
+        <div class="prose">
+          <p>
+            The C CLI (<code>Root4c</code>) is the primary, recommended build — a single
+            portable binary written in C11/C++17 with no runtime dependencies. It's what
+            Larpino and bakafetch are built directly into. The Node.js CLI
+            (<code>Root4node</code>) is published to npm separately and covers platforms
+            the native build doesn't ship for.
+          </p>
+        </div>
+
+        <table>
+          <tr><th>Path</th><th>Description</th></tr>
+          <tr><td><code>archive/vX.Y.Z/Root4c/</code></td><td>C CLI — portable single binary (primary)</td></tr>
+          <tr><td><code>archive/vX.Y.Z/Root4node/</code></td><td>Node.js CLI — published to npm</td></tr>
+          <tr><td><code>mainsite/</code></td><td>Website landing pages</td></tr>
+          <tr><td><code>manifests/</code></td><td>Winget package manifests</td></tr>
+          <tr><td><code>choco/</code></td><td>Chocolatey package</td></tr>
+        </table>
+
+        <div class="prose">
+          <p><strong>Larpino</strong>, the built-in inference engine, handles:</p>
+          <ul>
+            <li>GGUF-format LLAMA models — <code>Q4_0</code>, <code>Q4_1</code>, <code>Q5_0</code>, <code>Q5_1</code>, <code>Q8_0</code>, <code>F16</code>, <code>F32</code></li>
+            <li>BPE tokenization with merge rules</li>
+            <li>A KV-cached transformer (RoPE, SwiGLU, RMSNorm, grouped-query attention)</li>
+            <li>Top-k / temperature sampling</li>
+          </ul>
+          <p>
+            Project listings and metadata for <code>/list</code>, <code>/get</code>, and
+            <code>/info</code> are fetched live from <code>cdn.emtypyie.in/dev</code> — the
+            registry is never bundled with the binary.
+          </p>
+        </div>
+
+        <div class="file-label">build from source</div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">shell</span>
+            <button class="code-copy" onclick="copyCode(this)">copy</button>
+          </div>
+          <pre><code>cmake -B build
+cmake --build build</code></pre>
+        </div>
+
+        <div class="prose">
+          <p>Each GitHub release ships two Windows executables:</p>
+        </div>
+        <table>
+          <tr><th>ZIP</th><th>Contents</th><th>Source</th></tr>
+          <tr><td><code>emtypyie-cli-windows-x64-2.5.8.zip</code></td><td><code>emtypyie.exe</code></td><td>Node.js (pkg)</td></tr>
+          <tr><td><code>emtypyie-cli-native-windows-x64-2.5.8.zip</code></td><td><code>emtypyie.exe</code></td><td>C native build</td></tr>
+        </table>
+      </section>
+
+      <!-- §5 DEV LOGS -->
+      <section class="doc-section" id="devlogs">
+        <div class="section-label">
+          <span class="section-num">§5</span>
+          <span class="section-name">Dev Logs</span>
+        </div>
+
+        <div class="devlogs-list">
+
+          <div class="log-entry">
+            <div class="log-meta">
+              <div class="log-date">2026-07-19</div>
+              <div class="log-index">log #3</div>
+              <div class="log-version">v2.5.8</div>
+            </div>
+            <div class="log-body">
+              <div class="log-title">v2.5.8 — twelfth release</div>
+              <div class="log-content">
+                <p>
+                  Latest tag off <code>main</code>. Twelve releases in now, with the C native
+                  build remaining the primary path and Larpino stable enough to lean on as the
+                  default inference path for <code>/get larpino@1b</code>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-meta">
+              <div class="log-date">—</div>
+              <div class="log-index">log #2</div>
+              <div class="log-version">Larpino + bakafetch</div>
+            </div>
+            <div class="log-body">
+              <div class="log-title">Larpino inference engine and bakafetch land in the C core</div>
+              <div class="log-content">
+                <p>
+                  Wrote the LLAMA inference path directly into the C11/C++17 core instead of
+                  shelling out to an external runtime — GGUF loading, a BPE tokenizer with
+                  merge rules, a KV-cached transformer (RoPE, SwiGLU, RMSNorm, grouped-query
+                  attention), and top-k/temperature sampling all live in <code>Root4c</code>.
+                  <code>/larpino enable</code> drops straight into chat mode inside the shell.
+                </p>
+                <p>
+                  Alongside it, <code>/bf</code> shipped as a neofetch-style "bakafetch" system
+                  info screen with Unicode/braille art, and five color themes
+                  (<code>slate</code>, <code>green</code>, <code>amber</code>, <code>violet</code>,
+                  <code>cyan</code>) became switchable at runtime via <code>/theme</code>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-meta">
+              <div class="log-date">—</div>
+              <div class="log-index">log #1</div>
+              <div class="log-version">initial dual-build split</div>
+            </div>
+            <div class="log-body">
+              <div class="log-title">Splitting into a C native build and a Node.js build</div>
+              <div class="log-content">
+                <p>
+                  Early on the CLI settled into two parallel builds under <code>archive/</code>:
+                  <code>Root4c</code>, a dependency-free C native binary distributed via Winget
+                  and Chocolatey on Windows, and <code>Root4node</code>, a Node.js build ported
+                  with <code>pkg</code> and published to npm for everywhere else. The registry
+                  for <code>/list</code> / <code>/get</code> / <code>/info</code> was wired up
+                  to fetch live from <code>cdn.emtypyie.in/dev</code> rather than bundling
+                  project metadata into the binary.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /devlogs-list -->
+      </section>
+
+      <!-- ── LIKE / SHARE ── -->
+      <div class="action-bar">
+        <button class="action-btn" id="likeBtn" onclick="handleLike()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
+            <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+          </svg>
+          <span id="likeCount">0</span>
+        </button>
+        <span class="action-sep">·</span>
+        <button class="action-btn" onclick="handleShare()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          copy link
+        </button>
+        <span id="shareToast">✓ copied</span>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- ── FOOTER ── -->
+    <footer style="margin-left: -24px; margin-right: -24px;">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <div class="footer-logo">e</div>
+          <div class="footer-brand">
+            emtypyie-cli / <span>wiki</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /page -->
+
+  <script>
+    /* ── THEME ─────────────────────────────────────────────── */
+    const html       = document.documentElement;
+    const toggle     = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
+    const themeIcon  = document.getElementById('themeIcon');
+
+    const MOON_SVG = `<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>`;
+    const SUN_SVG  = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
+    function applyTheme(t) {
+      html.setAttribute('data-theme', t);
+      localStorage.setItem('emtypyie-cli-wiki-theme', t);
+      themeLabel.textContent = t;
+      themeIcon.innerHTML = t === 'dark' ? MOON_SVG : SUN_SVG;
+      const isDark = t === 'dark';
+      themeIcon.setAttribute('fill', isDark ? 'currentColor' : 'none');
+      if (!isDark) {
+        themeIcon.setAttribute('stroke', 'currentColor');
+        themeIcon.setAttribute('stroke-width', '2');
+        themeIcon.setAttribute('stroke-linecap', 'round');
+        themeIcon.setAttribute('stroke-linejoin', 'round');
+      }
+    }
+
+    const saved = localStorage.getItem('emtypyie-cli-wiki-theme') || 'light';
+    applyTheme(saved);
+
+    toggle.addEventListener('click', () => {
+      const cur = html.getAttribute('data-theme');
+      applyTheme(cur === 'dark' ? 'light' : 'dark');
+    });
+
+    /* ── LIKE SYSTEM (local-only) ────────────────────────────── */
+    const COOLDOWN   = 24 * 60 * 60 * 1000;
+    const LIKE_KEY   = 'emtypyie_cli_wiki_liked';
+    const COUNT_KEY  = 'emtypyie_cli_wiki_like_count';
+
+    const likeBtn   = document.getElementById('likeBtn');
+    const likeCount = document.getElementById('likeCount');
+
+    function getCount() { return parseInt(localStorage.getItem(COUNT_KEY) || '0', 10); }
+    function isLiked() {
+      const ts = localStorage.getItem(LIKE_KEY);
+      return ts && (Date.now() - parseInt(ts, 10)) < COOLDOWN;
+    }
+    function markLiked() {
+      likeBtn.classList.add('liked');
+      likeBtn.title = 'Already liked (cooldown active)';
+    }
+    function handleLike() {
+      if (isLiked()) { likeBtn.classList.add('liked'); return; }
+      localStorage.setItem(LIKE_KEY, Date.now().toString());
+      localStorage.setItem(COUNT_KEY, (getCount() + 1).toString());
+      likeCount.textContent = getCount();
+      markLiked();
+    }
+    likeCount.textContent = getCount();
+    if (isLiked()) markLiked();
+
+    /* ── SHARE SYSTEM ───────────────────────────────────────── */
+    const shareToast = document.getElementById('shareToast');
+    let toastTimeout;
+    async function handleShare() {
+      const url = window.location.href;
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        const el = document.createElement('textarea');
+        el.value = url;
+        el.style.cssText = 'position:fixed;top:-999px;left:-999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        el.remove();
+      }
+      shareToast.style.opacity = '1';
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => { shareToast.style.opacity = '0'; }, 2000);
+    }
+
+    /* ── CODE COPY ──────────────────────────────────────────── */
+    function copyCode(btn) {
+      const pre  = btn.closest('.code-block').querySelector('pre code');
+      const text = pre.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'copied!';
+        setTimeout(() => { btn.textContent = orig; }, 1500);
+      });
+    }
+
+    /* ── SMOOTH TOC SCROLL ──────────────────────────────────── */
+    document.querySelectorAll('.toc-link').forEach(link => {
+      link.addEventListener('click', e => {
+        const id = link.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          const top = el.getBoundingClientRect().top + window.scrollY - 70;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+
+    /* ── ACTIVE TOC HIGHLIGHT ───────────────────────────────── */
+    const sections = document.querySelectorAll('.doc-section[id]');
+    const tocLinks = document.querySelectorAll('.toc-link');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(l => l.style.color = '');
+          const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+          if (active) active.style.color = 'var(--accent)';
+        }
+      });
+    }, { rootMargin: `-${parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'))}px 0px -60% 0px` });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>
